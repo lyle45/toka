@@ -24,7 +24,7 @@ router
   .route(`${BASE_PATH}/search`)
   // search
   .post((req, res, next) => {
-    Project.find(req.body)
+    Project.find({ name: { $regex: req.body.query }})
       .lean()
       .then((projects) => res.send(projects))
       .catch(next);
