@@ -24,7 +24,7 @@ router
   .route(`${BASE_PATH}/search`)
   // search
   .post((req, res, next) => {
-    Task.find(req.body)
+    Task.find({ notes: { $regex: req.body.query } })
       .lean()
       .then((tasks) => res.send(tasks))
       .catch(next);
