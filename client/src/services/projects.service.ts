@@ -2,7 +2,7 @@ import { httpService } from '@/services/http-service/http.service';
 import type { Project } from '@/models/project.model';
 
 class ProjectsService {
-  public slug = 'projects';
+  public slug = 'api/projects';
 
   public async getProjects() {
     const response = await httpService.get<Project[]>(this.slug);
@@ -28,4 +28,11 @@ class ProjectsService {
     const response = await httpService.delete<{ id: string }>(`${this.slug}/${projectId}`);
     return response.data;
   }
+
+  public async searchProjects(searchParams: { query: string }) {
+    const response = await httpService.post<Project[]>(`${this.slug}/search`, searchParams);
+    return response.data;
+  }
 }
+
+export const projectsService = new ProjectsService();

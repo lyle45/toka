@@ -8,7 +8,8 @@ router
   .route(BASE_PATH)
   // find all
   .get((req, res, next) => {
-    Task.find()
+    const { projectId } = req.query;
+    Task.find({ projectId })
       .lean()
       .then((tasks) => res.send(tasks))
       .catch(next);
