@@ -1,4 +1,4 @@
-import { httpService } from '@/services/http-service/http.service';
+import { httpService } from '@/services/http.service';
 import type { Project } from '@/models/project.model';
 
 class ProjectsService {
