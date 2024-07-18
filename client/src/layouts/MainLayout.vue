@@ -1,9 +1,9 @@
 <template>
   <div class="layout">
     <AppHeader />
-    <div class="container">
-      <AppSidebar />
-      <main class="main-content">
+    <div class="main-container">
+      <AppSidebar class="col-md-3 d-none d-md-block" />
+      <main class="main-content col-md-9">
         <router-view />
       </main>
     </div>
@@ -11,8 +11,8 @@
 </template>
 
 <script setup>
-import AppHeader from '@/components/AppHeader/AppHeader.vue'
-import AppSidebar from '@/components/AppSidebar/AppSidebar.vue'
+import AppHeader from '@/components/AppHeader/AppHeader.vue';
+import AppSidebar from '@/components/AppSidebar/AppSidebar.vue';
 </script>
 
 <style lang="scss" scoped>
@@ -23,7 +23,7 @@ import AppSidebar from '@/components/AppSidebar/AppSidebar.vue'
   width: 100%;
 }
 
-.container {
+.main-container {
   display: flex;
   flex: 1;
 }

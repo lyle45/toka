@@ -19,7 +19,7 @@
 
 <style scoped lang="scss">
 .sidebar {
-  width: $sidebar-width;
+  max-width: $sidebar-width;
   background-color: $background-color;
   padding: 16px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
