@@ -1,4 +1,4 @@
-import { createRouter, createWebHistory } from 'vue-router'
+import { createRouter, createWebHistory } from 'vue-router';
 
 export enum RouteNames {
   home = 'home',
@@ -10,9 +10,9 @@ const router = createRouter({
     {
       path: '/',
       name: 'home',
-      component: import('@/layouts/MainLayout.vue')
-    }
-  ]
-})
+      component: import('@/layouts/MainLayout.vue'),
+    },
+  ],
+});
 
-export default router
+export default router;
