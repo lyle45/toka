@@ -1,9 +1,9 @@
 <template>
   <div class="project-item">
     <template v-if="loading">
-      <Skeletor width="80%" height="24px" pill class="project-title" />
-      <Skeletor width="100%" height="18px" pill class="project-description" />
-      <Skeletor width="60%" height="18px" pill class="project-date" />
+      <Skeletor width="60%" height="24px" pill class="project-title" />
+      <Skeletor width="80%" height="18px" pill class="project-description" />
+      <Skeletor width="40%" height="18px" pill class="project-date" />
     </template>
     <template v-else-if="project">
       <h3 class="project-title">{{ project.name }}</h3>
