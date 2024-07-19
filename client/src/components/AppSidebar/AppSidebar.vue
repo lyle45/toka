@@ -1,46 +1,45 @@
 <template>
   <nav class="sidebar">
-    <ul>
-      <li>
-        <router-link to="/">Home</router-link>
-      </li>
-      <li>
-        <router-link to="/about">About</router-link>
-      </li>
-      <li>
-        <router-link to="/services">Services</router-link>
-      </li>
-      <li>
-        <router-link to="/contact">Contact</router-link>
-      </li>
-    </ul>
+    <h2 class="project-list-title">Projects:</h2>
+
+    <div class="content-container">
+      <ProjectsList :projects="projects" />
+    </div>
   </nav>
 </template>
 
+<script setup lang="ts">
+import { useProjectsStore } from '@/stores/projects.store';
+import { storeToRefs } from 'pinia';
+import ProjectsList from '@/components/ProjectsList/ProjectsList.vue';
+
+const { projects } = storeToRefs(useProjectsStore());
+</script>
+
 <style scoped lang="scss">
 .sidebar {
-  max-width: $sidebar-width;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  position: relative;
   background-color: $background-color;
-  padding: 16px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   z-index: 99;
+  overflow: auto;
 }
 
-.sidebar ul {
-  list-style: none;
-  padding: 0;
+.project-list-title {
+  font-size: 24px;
+  color: #333;
+  position: sticky;
+  top: 0;
+  background-color: $background-color;
+  z-index: 1;
+  padding: 16px;
+  width: 100%;
 }
 
-.sidebar li {
-  margin: 16px 0;
-}
-
-.sidebar a {
-  text-decoration: none;
-  color: $primary-color;
-}
-
-.sidebar a:hover {
-  text-decoration: underline;
+.content-container {
+  padding: 16px;
 }
 </style>

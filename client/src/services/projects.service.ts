@@ -1,5 +1,5 @@
 import { httpService } from '@/services/http.service';
-import type { Project } from '@/models/project.model';
+import type { Project, NewProject } from '@/models/project.model';
 
 class ProjectsService {
   public slug = 'api/projects';
@@ -14,7 +14,7 @@ class ProjectsService {
     return response.data;
   }
 
-  public async createProject(project: Omit<Project, '_id'>) {
+  public async createProject(project: NewProject) {
     const response = await httpService.post<Project>(this.slug, project);
     return response.data;
   }
