@@ -5,10 +5,16 @@ import { type GetTasksParams, tasksService } from '@/services/tasks.service';
 
 export const useTasksStore = defineStore('tasks', () => {
   const tasks = ref<Task[]>([]);
+  const loadingTasks = ref(false);
 
   const fetchTasks = async (params: GetTasksParams) => {
-    tasks.value = await tasksService.getTasks(params);
+    try {
+      loadingTasks.value = true;
+      tasks.value = await tasksService.getTasks(params);
+    } finally {
+      loadingTasks.value = false;
+    }
   };
 
-  return { tasks, fetchTasks };
+  return { tasks, fetchTasks, loadingTasks };
 });

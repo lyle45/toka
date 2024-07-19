@@ -11,9 +11,7 @@
       />
     </template>
     <template v-else>
-      <ProjectItem loading class="item" />
-      <ProjectItem loading class="item" />
-      <ProjectItem loading class="item" />
+      <ProjectItem v-for="i in getRandomNumber()" :key="i" loading class="item" />
     </template>
   </div>
 </template>
@@ -49,6 +47,8 @@ const handleClick = (projectId: string) => {
 };
 
 const currentProjectId = computed(() => route.params.projectId);
+
+const getRandomNumber = () => Math.floor(Math.random() * 4);
 </script>
 
 <style lang="scss" scoped>

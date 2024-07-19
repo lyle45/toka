@@ -1,8 +1,10 @@
 <template>
-  <Card class="task-card">
-    <h3 class="task-title">{{ task.title }}</h3>
-    <p v-if="task.description" class="task-description">{{ task.description }}</p>
-    <small class="task-date" :title="formattedDate">Due date: {{ formattedDate }}</small>
+  <Card class="task-card" :loading="loading">
+    <template v-if="task">
+      <h3 class="task-title">{{ task.title }}</h3>
+      <p v-if="task.description" class="task-description">{{ task.description }}</p>
+      <small class="task-date" :title="formattedDate">Due date: {{ formattedDate }}</small>
+    </template>
   </Card>
 </template>
 
@@ -15,8 +17,12 @@ import { format } from 'date-fns';
 
 const props = defineProps({
   task: {
-    type: Object as PropType<Task>,
-    required: true,
+    type: Object as PropType<Task | null>,
+    default: null,
+  },
+  loading: {
+    type: Boolean,
+    default: false,
   },
 });
 
