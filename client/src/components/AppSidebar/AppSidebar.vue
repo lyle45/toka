@@ -3,17 +3,13 @@
     <h2 class="project-list-title">Projects:</h2>
 
     <div class="content-container">
-      <ProjectsList :projects="projects" />
+      <ProjectsList />
     </div>
   </nav>
 </template>
 
 <script setup lang="ts">
-import { useProjectsStore } from '@/stores/projects.store';
-import { storeToRefs } from 'pinia';
 import ProjectsList from '@/components/ProjectsList/ProjectsList.vue';
-
-const { projects } = storeToRefs(useProjectsStore());
 </script>
 
 <style scoped lang="scss">

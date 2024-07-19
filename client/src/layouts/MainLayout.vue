@@ -23,14 +23,7 @@ export default defineComponent({
     AppHeader,
     AppSidebar,
   },
-  async beforeRouteEnter() {
-    try {
-      const { fetchProjects } = useProjectsStore();
-      await fetchProjects();
-    } catch (e) {
-      console.log(e);
-    }
-  },
+  async beforeRouteEnter() {},
 });
 </script>
 

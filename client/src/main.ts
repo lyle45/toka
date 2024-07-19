@@ -1,5 +1,6 @@
 import '@/assets/styles.scss';
 import 'bootstrap/dist/css/bootstrap-grid.min.css';
+import 'vue-skeletor/dist/vue-skeletor.css';
 
 import { createApp } from 'vue';
 
