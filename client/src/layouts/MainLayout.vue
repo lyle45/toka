@@ -10,21 +10,9 @@
   </div>
 </template>
 
-<script lang="ts">
-import AppHeader from '@/components/AppHeader/AppHeader.vue';
-import AppSidebar from '@/components/AppSidebar/AppSidebar.vue';
-import { defineComponent } from 'vue';
-import { useProjectsStore } from '@/stores/projects.store';
-
-// Not using script setup here because we need to use the `beforeRouteEnter` navigation guard
-// data loaders are in rfc https://github.com/vuejs/rfcs/discussions/460
-export default defineComponent({
-  components: {
-    AppHeader,
-    AppSidebar,
-  },
-  async beforeRouteEnter() {},
-});
+<script setup lang="ts">
+import AppHeader from '@/components/Header/Header.vue';
+import AppSidebar from '@/components/Sidebar/Sidebar.vue';
 </script>
 
 <style lang="scss" scoped>

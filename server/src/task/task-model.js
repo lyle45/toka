@@ -12,6 +12,13 @@ const schema = BaseSchema({
     enum: Object.values(taskStates),
     default: taskStates.CREATED,
   },
+  title: {
+    type: String,
+    required: true,
+  },
+  description: {
+    type: String,
+  },
   projectId: {
     type: ObjectId,
     ref: "Project",

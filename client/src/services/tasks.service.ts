@@ -1,11 +1,15 @@
-import { httpService } from '@/services/http-service/http.service';
+import { httpService } from '@/services/http.service';
 import type { Task } from '@/models/task.model';
+
+export interface GetTasksParams {
+  projectId?: string;
+}
 
 export class TasksService {
   public slug = '/api/tasks';
 
-  public async getTasks() {
-    const response = await httpService.get<Task[]>(this.slug);
+  public async getTasks({ projectId }: GetTasksParams = {}) {
+    const response = await httpService.get<Task[]>(this.slug, { params: { projectId } });
     return response.data;
   }
 
@@ -29,3 +33,5 @@ export class TasksService {
     return response.data;
   }
 }
+
+export const tasksService = new TasksService();

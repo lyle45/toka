@@ -6,6 +6,7 @@ class HttpService {
 
   constructor() {
     this.axiosInstance = axios.create({
+      baseURL: window.location.origin,
       headers: {
         'Content-Type': 'application/json',
       },

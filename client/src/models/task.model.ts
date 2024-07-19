@@ -1,9 +1,13 @@
 export interface Task {
   _id: string;
   state: TaskStates;
+  title: string;
+  description?: string;
   projectId: string;
   dueDate: string;
-  notes: string;
+  createdAt: string;
+  updatedAt: string;
+  notes?: string;
 }
 
 export enum TaskStates {

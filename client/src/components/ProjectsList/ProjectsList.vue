@@ -1,22 +1,33 @@
 <template>
   <div class="project-list">
-    <template v-if="loading">
-      <ProjectItem loading class="item" />
-      <ProjectItem loading class="item" />
-      <ProjectItem loading class="item" />
+    <template v-if="!loading">
+      <ProjectItem
+        v-for="project in projects"
+        :key="project._id"
+        :project="project"
+        :active="currentProjectId === project._id"
+        class="item"
+        @click="handleClick(project._id)"
+      />
     </template>
     <template v-else>
-      <ProjectItem v-for="project in projects" :key="project._id" :project="project" class="item" />
+      <ProjectItem loading class="item" />
+      <ProjectItem loading class="item" />
+      <ProjectItem loading class="item" />
     </template>
   </div>
 </template>
 
 <script setup lang="ts">
 import ProjectItem from './ProjectItem/ProjectItem.vue';
-import { onMounted, ref } from 'vue';
+import { computed, onMounted, ref } from 'vue';
 import { useProjectsStore } from '@/stores/projects.store';
 import { storeToRefs } from 'pinia';
+import { useRoute, useRouter } from 'vue-router';
+import { RouteNames } from '@/router/router';
 
+const router = useRouter();
+const route = useRoute();
 const { fetchProjects } = useProjectsStore();
 const { projects } = storeToRefs(useProjectsStore());
 
@@ -32,6 +43,12 @@ onMounted(async () => {
     loading.value = false;
   }
 });
+
+const handleClick = (projectId: string) => {
+  router.push({ name: RouteNames.project, params: { projectId } });
+};
+
+const currentProjectId = computed(() => route.params.projectId);
 </script>
 
 <style lang="scss" scoped>
