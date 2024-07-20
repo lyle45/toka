@@ -48,7 +48,7 @@ const handleClick = (projectId: string) => {
 
 const currentProjectId = computed(() => route.params.projectId);
 
-const getRandomNumber = () => Math.floor(Math.random() * 4);
+const getRandomNumber = () => Math.floor(Math.random() * 3) + 1;
 </script>
 
 <style lang="scss" scoped>

@@ -1,6 +1,7 @@
 import '@/assets/styles.scss';
 import 'bootstrap/dist/css/bootstrap-grid.min.css';
 import 'vue-skeletor/dist/vue-skeletor.css';
+import '@mdi/font/css/materialdesignicons.css';
 
 import { createApp } from 'vue';
 

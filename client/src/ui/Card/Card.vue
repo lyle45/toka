@@ -6,13 +6,20 @@
       <Skeletor class="skeleton-date" width="40%" height="18px" pill />
     </template>
     <template v-else>
-      <slot />
+      <div class="card-content">
+        <slot />
+        <div class="card-actions">
+          <IconButton icon-class="mdi mdi-pencil" @click.stop="$emit('edit')" />
+          <IconButton icon-class="mdi mdi-delete" @click.stop="$emit('delete')" />
+        </div>
+      </div>
     </template>
   </div>
 </template>
 
 <script setup lang="ts">
 import { Skeletor } from 'vue-skeletor';
+import IconButton from '@/ui/IconButton/IconButton.vue';
 
 defineProps({
   loading: {
@@ -25,7 +32,7 @@ defineProps({
   },
 });
 
-defineEmits(['click']);
+defineEmits(['click', 'edit', 'delete']);
 </script>
 
 <style scoped lang="scss">
@@ -41,6 +48,7 @@ defineEmits(['click']);
     border 0.2s;
   border-radius: 8px;
   border: 1px solid transparent;
+  position: relative;
 
   &.clickable {
     cursor: pointer;
@@ -49,6 +57,10 @@ defineEmits(['click']);
       box-shadow: 0 8px 16px -8px rgba(0, 0, 0, 0.2);
       background-color: #f0f0f0;
       border: 1px solid #ccc;
+
+      .card-actions {
+        display: flex;
+      }
     }
   }
 
@@ -56,6 +68,18 @@ defineEmits(['click']);
     background-color: #e0e0e0;
     border: 1px solid #bbb;
   }
+}
+
+.card-content {
+  position: relative;
+}
+
+.card-actions {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  display: none;
+  gap: 4px;
 }
 
 .skeleton-title,
