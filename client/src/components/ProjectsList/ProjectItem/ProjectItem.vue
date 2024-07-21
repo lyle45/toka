@@ -48,6 +48,8 @@ import IconButton from '@/ui/IconButton/IconButton.vue';
 import ProjectForm from '@/components/ProjectForm/ProjectForm.vue';
 import { useProjectsStore } from '@/stores/projects.store';
 import ConfirmModal from '@/modals/ConfirmModal.vue';
+import { useRoute, useRouter } from 'vue-router';
+import { RouteNames } from '@/router/router';
 
 const props = defineProps({
   project: {
@@ -67,6 +69,8 @@ const props = defineProps({
 const { project } = toRefs(props);
 
 const { updateProject, deleteProject } = useProjectsStore();
+const route = useRoute();
+const router = useRouter();
 
 const showEditModal = ref(false);
 const loadingEdit = ref(false);
@@ -95,6 +99,9 @@ const handleDeleteConfirm = async () => {
     loadingDelete.value = true;
     project.value && (await deleteProject(project.value._id));
     showDeleteModal.value = false;
+    if (route.params.projectId === project.value?._id) {
+      await router.push({ name: RouteNames.home });
+    }
   } catch (e) {
     console.log(e);
   } finally {
