@@ -1,15 +1,48 @@
 <template>
   <nav class="sidebar">
-    <h2 class="project-list-title">Projects:</h2>
+    <div class="title-container">
+      <div class="project-list-title">Projects:</div>
+      <IconButton class="add-button" icon-class="mdi mdi-plus" @click="showCreateModal = true" />
+    </div>
 
     <div class="content-container">
       <ProjectsList />
     </div>
+
+    <FormModal v-model="showCreateModal" title="Create project">
+      <ProjectForm
+        :loading="loadingCreate"
+        @cancel="showCreateModal = false"
+        @confirm="handleCreateConfirm"
+      />
+    </FormModal>
   </nav>
 </template>
 
 <script setup lang="ts">
 import ProjectsList from '@/components/ProjectsList/ProjectsList.vue';
+import { ref } from 'vue';
+import IconButton from '@/ui/IconButton/IconButton.vue';
+import ProjectForm from '@/components/ProjectForm/ProjectForm.vue';
+import FormModal from '@/modals/CardModal.vue';
+import type { NewProject } from '@/models/project.model';
+import { useProjectsStore } from '@/stores/projects.store';
+
+const { createProject } = useProjectsStore();
+const showCreateModal = ref(false);
+const loadingCreate = ref(false);
+
+const handleCreateConfirm = async (newProject: NewProject) => {
+  try {
+    loadingCreate.value = true;
+    await createProject(newProject);
+    showCreateModal.value = false;
+  } catch (e) {
+    console.log(e);
+  } finally {
+    loadingCreate.value = false;
+  }
+};
 </script>
 
 <style scoped lang="scss">
@@ -24,15 +57,22 @@ import ProjectsList from '@/components/ProjectsList/ProjectsList.vue';
   overflow: auto;
 }
 
+.title-container {
+  display: flex;
+  align-items: center;
+  align-content: center;
+  justify-content: space-between;
+  padding: 16px;
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  width: 100%;
+  background-color: $background-color;
+}
+
 .project-list-title {
   font-size: 24px;
   color: #333;
-  position: sticky;
-  top: 0;
-  background-color: $background-color;
-  z-index: 1;
-  padding: 16px;
-  width: 100%;
 }
 
 .content-container {
