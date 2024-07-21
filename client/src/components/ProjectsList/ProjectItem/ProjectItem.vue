@@ -1,11 +1,4 @@
 <template>
-  <Card :loading="loading" :active="active" @click="$emit('click')">
-    <template v-if="project">
-      <h3 class="project-title">{{ project.name }}</h3>
-      <p class="project-description" :title="project.description">{{ project.description }}</p>
-      <small class="project-date" :title="formattedDate">Created at: {{ formattedDate }}</small>
-    </template>
-  </Card>
   <div>
     <Card
       clickable
@@ -32,6 +25,16 @@
         @confirm="handleEditConfirm"
       />
     </FormModal>
+    <ConfirmModal
+      v-if="project"
+      v-model="showDeleteModal"
+      title="Delete project?"
+      :loading="loadingDelete"
+      @cancel="showDeleteModal = false"
+      @confirm="handleDeleteConfirm"
+    >
+      Are you sure you want to delete this project?
+    </ConfirmModal>
   </div>
 </template>
 
@@ -44,6 +47,7 @@ import FormModal from '@/modals/CardModal.vue';
 import IconButton from '@/ui/IconButton/IconButton.vue';
 import ProjectForm from '@/components/ProjectForm/ProjectForm.vue';
 import { useProjectsStore } from '@/stores/projects.store';
+import ConfirmModal from '@/modals/ConfirmModal.vue';
 
 const props = defineProps({
   project: {
@@ -67,6 +71,8 @@ const { updateProject, deleteProject } = useProjectsStore();
 const showEditModal = ref(false);
 const loadingEdit = ref(false);
 
+const showDeleteModal = ref(false);
+const loadingDelete = ref(false);
 
 const formattedDate = computed(() => {
   return (project.value && format(new Date(project.value.createdAt), 'dd/MM/yyyy')) || '';
@@ -84,6 +90,17 @@ const handleEditConfirm = async (newProject: Project) => {
   }
 };
 
+const handleDeleteConfirm = async () => {
+  try {
+    loadingDelete.value = true;
+    project.value && (await deleteProject(project.value._id));
+    showDeleteModal.value = false;
+  } catch (e) {
+    console.log(e);
+  } finally {
+    loadingDelete.value = false;
+  }
+};
 </script>
 
 <style scoped lang="scss">
