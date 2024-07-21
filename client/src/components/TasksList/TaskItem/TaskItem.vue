@@ -1,5 +1,5 @@
 <template>
-  <Card class="task-card" :loading="loading">
+  <Card clickable class="task-card" :loading="loading">
     <template v-if="task">
       <h3 class="task-title">{{ task.title }}</h3>
       <p v-if="task.description" class="task-description">{{ task.description }}</p>

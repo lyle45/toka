@@ -1,18 +1,37 @@
 <template>
-  <button class="icon-button" @click.stop="$emit('click')">
-    <i :class="iconClass"></i>
+  <button class="icon-button" :style="{ width: size, height: size }" @click="handleClick">
+    <i :class="iconClass" :style="{ fontSize: iconSize }"></i>
   </button>
 </template>
 
 <script setup lang="ts">
-defineProps({
+import { computed, toRefs } from 'vue';
+
+const props = defineProps({
   iconClass: {
     type: String,
     required: true,
   },
+  size: {
+    type: String,
+    default: '32px', // Default size for the button
+  },
 });
 
-defineEmits(['click']);
+const emit = defineEmits(['click']);
+
+const { size } = toRefs(props);
+
+const handleClick = (event: MouseEvent) => {
+  event.stopPropagation();
+  emit('click', event);
+};
+
+const iconSize = computed(() => {
+  // Calculate the icon size based on the button size
+  const buttonSize = parseFloat(size.value);
+  return `${buttonSize * 0.75}px`;
+});
 </script>
 
 <style scoped lang="scss">

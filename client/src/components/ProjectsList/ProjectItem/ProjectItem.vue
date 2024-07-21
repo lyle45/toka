@@ -6,13 +6,44 @@
       <small class="project-date" :title="formattedDate">Created at: {{ formattedDate }}</small>
     </template>
   </Card>
+  <div>
+    <Card
+      clickable
+      :loading="loading"
+      :active="active"
+      @click="$emit('click')"
+      @edit="showEditModal = true"
+    >
+      <template v-if="project">
+        <h3 class="project-title">{{ project.name }}</h3>
+        <p class="project-description" :title="project.description">{{ project.description }}</p>
+        <small class="project-date" :title="formattedDate">Created at: {{ formattedDate }}</small>
+      </template>
+      <template #actions>
+        <IconButton icon-class="mdi mdi-pencil" size="24px" @click="showEditModal = true" />
+        <IconButton icon-class="mdi mdi-delete" size="24px" @click="showDeleteModal = true" />
+      </template>
+    </Card>
+    <FormModal v-if="project" v-model="showEditModal" title="Edit project">
+      <ProjectForm
+        :project="project"
+        :loading="loadingEdit"
+        @cancel="showEditModal = false"
+        @confirm="handleEditConfirm"
+      />
+    </FormModal>
+  </div>
 </template>
 
 <script setup lang="ts">
-import { computed, type PropType, toRefs } from 'vue';
+import { computed, type PropType, ref, toRefs } from 'vue';
 import { format } from 'date-fns';
 import Card from '@/ui/Card/Card.vue';
 import type { Project } from '@/models/project.model';
+import FormModal from '@/modals/CardModal.vue';
+import IconButton from '@/ui/IconButton/IconButton.vue';
+import ProjectForm from '@/components/ProjectForm/ProjectForm.vue';
+import { useProjectsStore } from '@/stores/projects.store';
 
 const props = defineProps({
   project: {
@@ -31,9 +62,28 @@ const props = defineProps({
 
 const { project } = toRefs(props);
 
+const { updateProject, deleteProject } = useProjectsStore();
+
+const showEditModal = ref(false);
+const loadingEdit = ref(false);
+
+
 const formattedDate = computed(() => {
   return (project.value && format(new Date(project.value.createdAt), 'dd/MM/yyyy')) || '';
 });
+
+const handleEditConfirm = async (newProject: Project) => {
+  try {
+    loadingEdit.value = true;
+    await updateProject(newProject);
+    showEditModal.value = false;
+  } catch (e) {
+    console.log(e);
+  } finally {
+    loadingEdit.value = false;
+  }
+};
+
 </script>
 
 <style scoped lang="scss">
