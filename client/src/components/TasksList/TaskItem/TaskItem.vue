@@ -8,7 +8,7 @@
       </template>
       <template #actions>
         <IconButton icon-class="mdi mdi-pencil" size="24px" @click="showEditModal = true" />
-        <IconButton icon-class="mdi mdi-delete" size="24px" />
+        <IconButton icon-class="mdi mdi-delete" size="24px" @click="showDeleteModal = true" />
       </template>
     </Card>
     <CardModal v-if="task" v-model="showEditModal" title="Edit Task">
@@ -19,6 +19,16 @@
         @confirm="handleEditConfirm"
       />
     </CardModal>
+    <ConfirmModal
+      v-if="task"
+      v-model="showDeleteModal"
+      title="Delete task?"
+      :loading="loadingDelete"
+      @cancel="showDeleteModal = false"
+      @confirm="handleDeleteConfirm"
+    >
+      Are you sure you want to delete this task?
+    </ConfirmModal>
   </div>
 </template>
 
@@ -32,6 +42,7 @@ import IconButton from '@/ui/IconButton/IconButton.vue';
 import CardModal from '@/modals/CardModal.vue';
 import TaskForm from '@/forms/TaskForm.vue';
 import { useTasksStore } from '@/stores/tasks.store';
+import ConfirmModal from '@/modals/ConfirmModal.vue';
 
 const props = defineProps({
   task: {
@@ -46,10 +57,13 @@ const props = defineProps({
 
 const { task } = toRefs(props);
 
-const { updateTask } = useTasksStore();
+const { updateTask, deleteTask } = useTasksStore();
 
 const showEditModal = ref(false);
 const loadingEdit = ref(false);
+
+const showDeleteModal = ref(false);
+const loadingDelete = ref(false);
 
 const formattedDate = computed(() => {
   return (task.value && format(new Date(task.value.dueDate), 'dd/MM/yyyy')) || '';
@@ -64,6 +78,18 @@ const handleEditConfirm = async (newTask: Task) => {
     console.log(e);
   } finally {
     loadingEdit.value = false;
+  }
+};
+
+const handleDeleteConfirm = async () => {
+  try {
+    loadingDelete.value = true;
+    task.value && (await deleteTask(task.value._id));
+    showDeleteModal.value = false;
+  } catch (e) {
+    console.log(e);
+  } finally {
+    loadingDelete.value = false;
   }
 };
 </script>
