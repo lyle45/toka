@@ -17,14 +17,14 @@
         <IconButton icon-class="mdi mdi-delete" size="24px" @click="showDeleteModal = true" />
       </template>
     </Card>
-    <FormModal v-if="project" v-model="showEditModal" title="Edit project">
+    <CardModal v-if="project" v-model="showEditModal" title="Edit project">
       <ProjectForm
         :project="project"
         :loading="loadingEdit"
         @cancel="showEditModal = false"
         @confirm="handleEditConfirm"
       />
-    </FormModal>
+    </CardModal>
     <ConfirmModal
       v-if="project"
       v-model="showDeleteModal"
@@ -43,9 +43,9 @@ import { computed, type PropType, ref, toRefs } from 'vue';
 import { format } from 'date-fns';
 import Card from '@/ui/Card/Card.vue';
 import type { Project } from '@/models/project.model';
-import FormModal from '@/modals/CardModal.vue';
+import CardModal from '@/modals/CardModal.vue';
 import IconButton from '@/ui/IconButton/IconButton.vue';
-import ProjectForm from '@/components/ProjectForm/ProjectForm.vue';
+import ProjectForm from '@/forms/ProjectForm.vue';
 import { useProjectsStore } from '@/stores/projects.store';
 import ConfirmModal from '@/modals/ConfirmModal.vue';
 import { useRoute, useRouter } from 'vue-router';

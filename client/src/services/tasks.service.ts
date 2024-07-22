@@ -1,5 +1,5 @@
 import { httpService } from '@/services/http.service';
-import type { Task } from '@/models/task.model';
+import type { NewTask, Task } from '@/models/task.model';
 
 export interface GetTasksParams {
   projectId?: string;
@@ -15,6 +15,11 @@ export class TasksService {
 
   public async getTask(taskId: string) {
     const response = await httpService.get<Task>(`${this.slug}/${taskId}`);
+    return response.data;
+  }
+
+  public async createTask(task: NewTask) {
+    const response = await httpService.post<Task>(this.slug, task);
     return response.data;
   }
 

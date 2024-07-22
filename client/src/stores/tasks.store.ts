@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia';
 import { ref } from 'vue';
-import type { Task } from '@/models/task.model';
+import type { NewTask, Task } from '@/models/task.model';
 import { type GetTasksParams, tasksService } from '@/services/tasks.service';
 
 export const useTasksStore = defineStore('tasks', () => {
@@ -16,5 +16,21 @@ export const useTasksStore = defineStore('tasks', () => {
     }
   };
 
-  return { tasks, fetchTasks, loadingTasks };
+  const createTask = async (newTask: NewTask) => {
+    const task = await tasksService.createTask(newTask);
+    tasks.value.push(task);
+  };
+
+  const updateTask = async (task: Task) => {
+    const updatedTask = await tasksService.updateTask(task);
+    const index = tasks.value.findIndex((t) => t._id === updatedTask._id);
+    tasks.value[index] = updatedTask;
+  };
+
+  const deleteTask = async (taskId: string) => {
+    await tasksService.deleteTask(taskId);
+    tasks.value = tasks.value.filter((task) => task._id !== taskId);
+  };
+
+  return { tasks, fetchTasks, loadingTasks, updateTask, createTask, deleteTask };
 });

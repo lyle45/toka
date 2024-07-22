@@ -23,7 +23,7 @@
 import ProjectsList from '@/components/ProjectsList/ProjectsList.vue';
 import { ref } from 'vue';
 import IconButton from '@/ui/IconButton/IconButton.vue';
-import ProjectForm from '@/components/ProjectForm/ProjectForm.vue';
+import ProjectForm from '@/forms/ProjectForm.vue';
 import FormModal from '@/modals/CardModal.vue';
 import type { NewProject } from '@/models/project.model';
 import { useProjectsStore } from '@/stores/projects.store';

@@ -3,7 +3,17 @@ import { computed, reactive, type UnwrapRef, watch } from 'vue';
 export interface Field<T = string> {
   name: string;
   value: T;
+  label: string;
   errorMsg: string;
+  rows?: number;
+  type: FieldTypes;
+}
+
+export enum FieldTypes {
+  input = 'input',
+  textarea = 'textarea',
+  select = 'select',
+  date = 'date',
 }
 
 export function useField<T = string>(initialValue: T, errorMsg: string = '') {

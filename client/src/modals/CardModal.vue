@@ -39,11 +39,17 @@ defineEmits(['confirm', 'cancel']);
 .card-modal-content {
   display: flex;
   flex-direction: column;
+  height: 100%;
+  padding: 32px;
 }
 </style>
 
 <style scoped lang="scss">
 .card-modal-card {
-  width: 400px;
+  display: flex;
+  flex-direction: column;
+  width: 350px;
+  max-height: 100%;
+  overflow: auto;
 }
 </style>

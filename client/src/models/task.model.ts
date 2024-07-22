@@ -15,3 +15,5 @@ export enum TaskStates {
   IN_PROGRESS = 'IN_PROGRESS',
   COMPLETED = 'COMPLETED',
 }
+
+export type NewTask = Omit<Task, '_id' | 'createdAt' | 'updatedAt'>;
