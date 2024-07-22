@@ -77,7 +77,7 @@ const handleSelected = (date: Date) => {
   position: relative;
 }
 
-.datepicker-calendar {
+.datepicker-container :deep(.datepicker-calendar) {
   border: 1px solid $primary-color;
   border-radius: 4px;
   background-color: #fff;
@@ -86,6 +86,24 @@ const handleSelected = (date: Date) => {
   bottom: 100%;
   left: 0;
   transform: translateY(-8px);
+
+  .vuejs3-datepicker__calendar-topbar {
+    background-color: $primary-color; /* Primary color */
+    color: #fff;
+  }
+
+  .cell {
+    &:not(.blank):not(.disabled).day:hover,
+    &:not(.blank):not(.disabled).month:hover,
+    &:not(.blank):not(.disabled).year:hover {
+      border: 1px solid $primary-color;
+    }
+
+    &.selected {
+      background-color: $primary-color;
+      color: #fff;
+    }
+  }
 }
 
 .has-error {
