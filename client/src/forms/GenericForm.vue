@@ -16,6 +16,13 @@
         :label="field.label"
         :error-message="formFields[field.name].error"
       />
+      <Dropdown
+        v-if="field.type === FieldTypes.dropdown"
+        v-model="formFields[field.name].value"
+        :label="field.label"
+        :items="field.dropdownItems!"
+        :error-message="formFields[field.name].error"
+      />
     </template>
     <div class="form-buttons">
       <ContainedButton @click="$emit('cancel')">Cancel</ContainedButton>
@@ -36,6 +43,7 @@ import { useForm, type Field, FieldTypes } from '@/hooks/forms';
 import OutlinedInput from '@/ui/OutlinedInput/OutlinedInput.vue';
 import ContainedButton from '@/ui/ContainedButton/ContainedButton.vue';
 import DatePicker from '@/ui/DatePicker/DatePicker.vue';
+import Dropdown from '@/ui/Dropdown/Dropdown.vue';
 
 const props = defineProps({
   fields: {

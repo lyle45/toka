@@ -18,6 +18,7 @@ const schema = BaseSchema({
   },
   description: {
     type: String,
+    required: true,
   },
   projectId: {
     type: ObjectId,

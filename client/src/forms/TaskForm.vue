@@ -8,10 +8,10 @@
 </template>
 
 <script setup lang="ts">
-import { toRefs, defineEmits, defineProps, computed, type PropType } from 'vue';
+import { toRefs, defineEmits, defineProps, type PropType } from 'vue';
 import GenericForm from '@/forms/GenericForm.vue';
-import { FieldTypes } from '@/hooks/forms';
-import type { NewTask, Task } from '@/models/task.model';
+import { type Field, FieldTypes } from '@/hooks/forms';
+import { type NewTask, type Task, TaskStates } from '@/models/task.model';
 
 const props = defineProps({
   task: {
@@ -27,7 +27,13 @@ const props = defineProps({
 const emit = defineEmits(['cancel', 'confirm']);
 const { task } = toRefs(props);
 
-const taskFields = computed(() => [
+const taskStateOptions = [
+  { value: TaskStates.CREATED, label: 'Created' },
+  { value: TaskStates.IN_PROGRESS, label: 'In Progress' },
+  { value: TaskStates.COMPLETED, label: 'Completed' },
+];
+
+const taskFields: Field[] = [
   {
     name: 'title',
     value: task.value?.title || '',
@@ -44,13 +50,21 @@ const taskFields = computed(() => [
     rows: 4,
   },
   {
+    name: 'state',
+    value: task.value?.state || TaskStates.CREATED,
+    errorMsg: 'State must be selected',
+    label: 'Task State',
+    type: FieldTypes.dropdown,
+    dropdownItems: taskStateOptions,
+  },
+  {
     name: 'dueDate',
     value: task.value?.dueDate || '',
     errorMsg: 'Due date must be provided',
     label: 'Due Date',
     type: FieldTypes.date,
   },
-]);
+];
 
 const handleConfirm = (values: NewTask) => {
   emit('confirm', { ...task.value, ...values });

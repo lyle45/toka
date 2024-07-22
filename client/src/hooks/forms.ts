@@ -7,13 +7,19 @@ export interface Field<T = string> {
   errorMsg: string;
   rows?: number;
   type: FieldTypes;
+  dropdownItems?: DropdownItem[];
 }
 
 export enum FieldTypes {
   input = 'input',
   textarea = 'textarea',
-  select = 'select',
   date = 'date',
+  dropdown = 'dropdown',
+}
+
+export interface DropdownItem {
+  value: string;
+  label: string;
 }
 
 export function useField<T = string>(initialValue: T, errorMsg: string = '') {
