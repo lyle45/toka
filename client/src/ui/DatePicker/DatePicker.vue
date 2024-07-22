@@ -93,10 +93,12 @@ const handleSelected = (date: Date) => {
   }
 
   .cell {
-    &:not(.blank):not(.disabled).day:hover,
-    &:not(.blank):not(.disabled).month:hover,
-    &:not(.blank):not(.disabled).year:hover {
-      border: 1px solid $primary-color;
+    &:not(.blank):not(.disabled) {
+      &.day:hover,
+      &.month:hover,
+      &.year:hover {
+        border: 1px solid $primary-color;
+      }
     }
 
     &.selected {
