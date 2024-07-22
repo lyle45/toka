@@ -1,8 +1,14 @@
 <template>
   <div class="page-container">
-    <div class="project-details">
-      <h1 class="project-title">{{ currentProject?.name }}</h1>
-      <p class="project-description">{{ currentProject?.description }}</p>
+    <div v-if="currentProject" class="project-details">
+      <h1 class="project-title">{{ currentProject.name }}</h1>
+      <p class="project-description">{{ currentProject.description }}</p>
+    </div>
+    <div v-else class="project-details-skeleton">
+      <Skeletor width="40%" height="32px" pill class="skeleton-title" />
+      <Skeletor width="80%" height="16px" pill class="skeleton-description" />
+      <Skeletor width="75%" height="16px" pill class="skeleton-description" />
+      <Skeletor width="90%" height="16px" pill class="skeleton-description" />
     </div>
     <TasksBoard :tasks="tasks" />
   </div>
@@ -14,6 +20,7 @@ import { useTasksStore } from '@/stores/tasks.store';
 import { storeToRefs } from 'pinia';
 import TasksBoard from '@/components/TasksBoard/TasksBoard.vue';
 import { useProjectsStore } from '@/stores/projects.store';
+import { Skeletor } from 'vue-skeletor';
 
 const { fetchTasks } = useTasksStore();
 const { projects } = storeToRefs(useProjectsStore());
@@ -54,6 +61,7 @@ watch(
 }
 
 .project-details {
+  min-height: 115px;
   padding: 16px 16px 0 16px;
   margin-bottom: 16px;
 }
@@ -68,5 +76,20 @@ watch(
 .project-description {
   font-size: 16px;
   color: #666;
+}
+
+.project-details-skeleton {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 24px;
+}
+
+.skeleton-title {
+  align-self: center;
+  margin-bottom: 12px;
+}
+
+.skeleton-description {
+  margin-bottom: 8px;
 }
 </style>
