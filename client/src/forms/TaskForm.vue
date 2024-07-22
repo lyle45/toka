@@ -59,7 +59,7 @@ const taskFields: Field[] = [
   },
   {
     name: 'dueDate',
-    value: task.value?.dueDate || '',
+    value: task.value?.dueDate || new Date().toISOString(),
     errorMsg: 'Due date must be provided',
     label: 'Due Date',
     type: FieldTypes.date,

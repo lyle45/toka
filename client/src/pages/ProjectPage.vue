@@ -1,9 +1,14 @@
 <template>
   <div class="page-container">
-    <div v-if="currentProject" class="project-details">
-      <h1 class="project-title">{{ currentProject.name }}</h1>
-      <p class="project-description">{{ currentProject.description }}</p>
-    </div>
+    <template v-if="currentProject">
+      <ContainedButton class="create-button" @click="showCreateModal = true">
+        New task
+      </ContainedButton>
+      <div class="project-details">
+        <h1 class="project-title">{{ currentProject.name }}</h1>
+        <p class="project-description">{{ currentProject.description }}</p>
+      </div>
+    </template>
     <div v-else class="project-details-skeleton">
       <Skeletor width="40%" height="32px" pill class="skeleton-title" />
       <Skeletor width="80%" height="16px" pill class="skeleton-description" />
@@ -11,18 +16,29 @@
       <Skeletor width="90%" height="16px" pill class="skeleton-description" />
     </div>
     <TasksBoard :tasks="tasks" />
+    <FormModal v-model="showCreateModal" title="Create project">
+      <TaskForm
+        :loading="loadingCreate"
+        @cancel="showCreateModal = false"
+        @confirm="handleCreateConfirm"
+      />
+    </FormModal>
   </div>
 </template>
 
 <script setup lang="ts">
-import { computed, toRefs, watch } from 'vue';
+import { computed, ref, toRefs, watch } from 'vue';
 import { useTasksStore } from '@/stores/tasks.store';
 import { storeToRefs } from 'pinia';
 import TasksBoard from '@/components/TasksBoard/TasksBoard.vue';
 import { useProjectsStore } from '@/stores/projects.store';
 import { Skeletor } from 'vue-skeletor';
+import ContainedButton from '@/ui/ContainedButton/ContainedButton.vue';
+import FormModal from '@/modals/CardModal.vue';
+import TaskForm from '@/forms/TaskForm.vue';
+import type { NewTask } from '@/models/task.model';
 
-const { fetchTasks } = useTasksStore();
+const { fetchTasks, createTask } = useTasksStore();
 const { projects } = storeToRefs(useProjectsStore());
 const { tasks } = storeToRefs(useTasksStore());
 
@@ -34,6 +50,9 @@ const props = defineProps({
 });
 
 const { projectId } = toRefs(props);
+
+const showCreateModal = ref(false);
+const loadingCreate = ref(false);
 
 const currentProject = computed(() =>
   projects.value.find((project) => project._id === projectId.value)
@@ -50,6 +69,18 @@ watch(
   },
   { immediate: true }
 );
+
+const handleCreateConfirm = async (newTask: NewTask) => {
+  try {
+    loadingCreate.value = true;
+    await createTask({ ...newTask, projectId: projectId?.value });
+    showCreateModal.value = false;
+  } catch (e) {
+    console.log(e);
+  } finally {
+    loadingCreate.value = false;
+  }
+};
 </script>
 
 <style scoped lang="scss">
@@ -58,6 +89,7 @@ watch(
   flex-direction: column;
   height: 100%;
   overflow: hidden;
+  position: relative;
 }
 
 .project-details {
@@ -91,5 +123,11 @@ watch(
 
 .skeleton-description {
   margin-bottom: 8px;
+}
+
+.create-button {
+  position: absolute;
+  right: 0;
+  top: 0;
 }
 </style>
