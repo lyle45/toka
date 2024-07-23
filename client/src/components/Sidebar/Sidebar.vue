@@ -28,8 +28,11 @@ import FormModal from '@/modals/CardModal.vue';
 import type { NewProject } from '@/models/project.model';
 import { useProjectsStore } from '@/stores/projects.store';
 import { useToast } from 'vue-toastification';
+import { useRouter } from 'vue-router';
+import { RouteNames } from '@/router/router';
 
 const { createProject } = useProjectsStore();
+const router = useRouter();
 const toast = useToast();
 
 const showCreateModal = ref(false);
@@ -38,8 +41,9 @@ const loadingCreate = ref(false);
 const handleCreateConfirm = async (newProject: NewProject) => {
   try {
     loadingCreate.value = true;
-    await createProject(newProject);
+    const project = await createProject(newProject);
     showCreateModal.value = false;
+    await router.push({ name: RouteNames.project, params: { projectId: project._id } });
   } catch (e) {
     toast.error("Something happened, couldn't create project");
     console.log(e);

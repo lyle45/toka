@@ -22,6 +22,7 @@ export const useProjectsStore = defineStore('projects', () => {
   const createProject = async (newProject: NewProject) => {
     const project = await projectsService.createProject(newProject);
     addProjectToStore(project);
+    return project;
   };
 
   const updateProjectInStore = (project: Project) => {
