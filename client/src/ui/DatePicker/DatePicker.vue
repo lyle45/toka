@@ -75,6 +75,7 @@ const handleSelected = (date: Date) => {
 
 .datepicker-wrapper {
   position: relative;
+  width: 100%;
 }
 
 .datepicker-container :deep(.datepicker-calendar) {
@@ -86,6 +87,7 @@ const handleSelected = (date: Date) => {
   bottom: 100%;
   left: 0;
   transform: translateY(-8px);
+  width: 100%;
 
   .vuejs3-datepicker__calendar-topbar {
     background-color: $primary-color; /* Primary color */
