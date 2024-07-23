@@ -4,6 +4,7 @@
     :class="{ clickable: clickable && !active && !loading, active }"
     @click="$emit('click')"
   >
+    <div class="card-actions-placeholder"></div>
     <template v-if="loading">
       <Skeletor class="skeleton-title" width="60%" height="24px" pill />
       <Skeletor class="skeleton-description" width="80%" height="18px" pill />
@@ -73,6 +74,12 @@ defineEmits(['click', 'edit', 'delete']);
 
   .card-content {
     position: relative;
+  }
+
+  .card-actions-placeholder {
+    width: 52px;
+    height: 24px;
+    float: right;
   }
 
   .card-actions {

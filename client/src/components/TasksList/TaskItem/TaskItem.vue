@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="task-item">
     <Card clickable class="task-card" :loading="loading">
       <template v-if="task">
         <h3 class="task-title">{{ task.title }}</h3>
@@ -99,6 +99,10 @@ const handleDeleteConfirm = async () => {
 </script>
 
 <style scoped lang="scss">
+.task-item {
+  word-break: break-word;
+}
+
 .task-card {
   margin-bottom: 16px;
 }

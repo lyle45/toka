@@ -74,6 +74,7 @@ const handleCreateConfirm = async (newTask: NewTask) => {
   background-color: $background-color;
   border-radius: 8px;
   height: 100%;
+  min-width: 250px;
   overflow: auto;
   box-shadow:
     0 4px 6px -1px rgba(0, 0, 0, 0.1),

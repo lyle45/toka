@@ -1,7 +1,7 @@
 <template>
   <div class="tasks-board">
     <!-- a bit of div soup here since bootstrap grid doesn't account for margin on the same element -->
-    <div class="col-4">
+    <div class="col-lg-4">
       <TasksColumn
         class="margin-right"
         :tasks="createdTasks"
@@ -10,7 +10,7 @@
         title="Created Tasks"
       />
     </div>
-    <div class="col-4">
+    <div class="col-lg-4">
       <TasksColumn
         class="margin-right"
         :tasks="inProgressTasks"
@@ -19,7 +19,7 @@
         title="In Progress Tasks"
       />
     </div>
-    <div class="col-4">
+    <div class="col-lg-4">
       <TasksColumn
         :tasks="completedTasks"
         :project-id="projectId"
@@ -66,6 +66,7 @@ const completedTasks = computed(() =>
   height: 100%;
   width: 100%;
   overflow: hidden;
+  overflow-x: auto;
 }
 
 .margin-right {
