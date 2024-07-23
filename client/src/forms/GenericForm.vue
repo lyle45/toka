@@ -9,12 +9,14 @@
         :type="field.type"
         :rows="field.rows || 4"
         :textarea="field.type === FieldTypes.textarea"
+        :placeholder="field.placeholder"
       />
       <DatePicker
         v-if="field.type === FieldTypes.date"
         v-model="formFields[field.name].value"
         :label="field.label"
         :error-message="formFields[field.name].error"
+        :placeholder="field.placeholder"
       />
       <Dropdown
         v-if="field.type === FieldTypes.dropdown"

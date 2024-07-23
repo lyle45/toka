@@ -10,7 +10,7 @@
       <Skeletor width="75%" height="16px" pill class="skeleton-description" />
       <Skeletor width="90%" height="16px" pill class="skeleton-description" />
     </div>
-    <TasksBoard :tasks="tasks" :project-id="projectId" />
+    <TasksBoard :tasks="filteredTasks" :project-id="projectId" />
   </div>
 </template>
 
@@ -28,7 +28,7 @@ import { RouteNames } from '@/router/router';
 const router = useRouter();
 const { fetchTasks } = useTasksStore();
 const { projects, loadingProjects } = storeToRefs(useProjectsStore());
-const { tasks } = storeToRefs(useTasksStore());
+const { filteredTasks } = storeToRefs(useTasksStore());
 const toast = useToast();
 
 const props = defineProps({

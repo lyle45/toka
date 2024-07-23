@@ -8,6 +8,7 @@ export interface Field<T = string> {
   rows?: number;
   type: FieldTypes;
   dropdownItems?: DropdownItem[];
+  placeholder?: string;
 }
 
 export enum FieldTypes {

@@ -40,6 +40,7 @@ const taskFields: Field[] = [
     errorMsg: 'Title must be provided',
     label: 'Title',
     type: FieldTypes.input,
+    placeholder: 'Write a title',
   },
   {
     name: 'description',
@@ -48,6 +49,7 @@ const taskFields: Field[] = [
     label: 'Description',
     type: FieldTypes.textarea,
     rows: 4,
+    placeholder: 'Write a description',
   },
   {
     name: 'state',

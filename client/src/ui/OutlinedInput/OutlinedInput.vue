@@ -1,13 +1,21 @@
 <template>
   <div :class="['outlined-field', { textarea: textarea }]">
-    <label :for="elementId" class="field-label">{{ label }}</label>
-    <input v-if="!textarea" v-model="value" v-bind="$attrs" :id="elementId" class="field-element" />
+    <label v-if="label" :for="elementId" class="field-label">{{ label }}</label>
+    <input
+      v-if="!textarea"
+      v-model="value"
+      v-bind="$attrs"
+      :placeholder="placeholder"
+      :id="elementId"
+      class="field-element"
+    />
     <textarea
       v-else
       v-model="value"
       v-bind="$attrs"
       :id="elementId"
       :rows="rows"
+      :placeholder="placeholder"
       class="field-element"
     ></textarea>
     <div v-if="errorMessage" class="error-message">{{ errorMessage }}</div>
@@ -22,7 +30,7 @@ const value = defineModel({ type: String, required: true });
 defineProps({
   label: {
     type: String,
-    required: true,
+    default: '',
   },
   name: {
     type: String,
@@ -37,6 +45,10 @@ defineProps({
     default: 4,
   },
   errorMessage: {
+    type: String,
+    default: '',
+  },
+  placeholder: {
     type: String,
     default: '',
   },
@@ -64,7 +76,7 @@ const elementId = computed(() => `field-${Math.random().toString(36).substr(2, 9
     padding: 12px;
     border: 1px solid rgba(0, 0, 0, 0.42);
     border-radius: 4px;
-    background-color: transparent;
+    background-color: white;
     transition: border-color 0.2s;
     caret-color: $primary-color;
 

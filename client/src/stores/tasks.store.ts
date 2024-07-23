@@ -1,5 +1,5 @@
 import { defineStore, storeToRefs } from 'pinia';
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
 import type { NewTask, Task } from '@/models/task.model';
 import { type GetTasksParams, tasksService } from '@/services/tasks.service';
 import { useProjectsStore } from '@/stores/projects.store';
@@ -9,6 +9,13 @@ export const useTasksStore = defineStore('tasks', () => {
 
   const tasks = ref<Task[]>([]);
   const loadingTasks = ref(false);
+  const filterText = ref('');
+
+  const filteredTasks = computed(() =>
+    !filterText.value
+      ? tasks.value
+      : tasks.value.filter((task) => task.title.includes(filterText.value))
+  );
 
   const fetchTasks = async (params: GetTasksParams) => {
     try {
@@ -57,6 +64,8 @@ export const useTasksStore = defineStore('tasks', () => {
   return {
     tasks,
     loadingTasks,
+    filteredTasks,
+    filterText,
     fetchTasks,
     addTaskToStore,
     createTask,

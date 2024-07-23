@@ -8,9 +8,9 @@
 </template>
 
 <script setup lang="ts">
-import { toRefs, computed, type PropType } from 'vue';
+import { toRefs, type PropType } from 'vue';
 import GenericForm from '@/forms/GenericForm.vue';
-import { FieldTypes } from '@/hooks/forms';
+import { type Field, FieldTypes } from '@/hooks/forms';
 import type { NewProject, Project } from '@/models/project.model';
 
 const props = defineProps({
@@ -27,13 +27,14 @@ const props = defineProps({
 const emit = defineEmits(['cancel', 'confirm']);
 const { project } = toRefs(props);
 
-const projectFields = computed(() => [
+const projectFields: Field[] = [
   {
     name: 'name',
     value: project.value?.name || '',
     errorMsg: 'Name must be provided',
     label: 'Name',
     type: FieldTypes.input,
+    placeholder: 'Write a name',
   },
   {
     name: 'description',
@@ -42,8 +43,9 @@ const projectFields = computed(() => [
     label: 'Description',
     type: FieldTypes.textarea,
     rows: 4,
+    placeholder: 'Write a description',
   },
-]);
+];
 
 const handleConfirm = (values: NewProject) => {
   emit('confirm', { ...project.value, ...values });

@@ -13,16 +13,28 @@
       :class="{ small: $matches.sm.max }"
       @click="$router.push({ name: RouteNames.home })"
     >
-      Toka Project Manager
+      Project Manager
     </h1>
+    <div
+      v-if="$route.name !== RouteNames.home"
+      class="task-filter-container"
+      :class="{ small: $matches.sm.max }"
+    >
+      <OutlinedInput v-model="filterText" placeholder="Filter tasks" class="task-filter-input" />
+    </div>
   </header>
 </template>
 
 <script setup lang="ts">
-import { RouteNames } from '@/router/router.js';
+import { RouteNames } from '@/router/router';
 import IconButton from '@/ui/IconButton/IconButton.vue';
+import OutlinedInput from '@/ui/OutlinedInput/OutlinedInput.vue';
+import { storeToRefs } from 'pinia';
+import { useTasksStore } from '@/stores/tasks.store';
 
 defineEmits(['toggle-sidebar']);
+
+const { filterText } = storeToRefs(useTasksStore());
 </script>
 
 <style scoped lang="scss">
@@ -43,11 +55,19 @@ defineEmits(['toggle-sidebar']);
   flex: 1;
 
   &.small {
-    font-size: 24px;
+    font-size: 20px;
   }
 }
 
 .menu-button {
-  margin-right: 16px;
+  margin-right: 8px;
+}
+
+.task-filter-container {
+  width: 200px;
+
+  &.small {
+    width: 150px;
+  }
 }
 </style>
