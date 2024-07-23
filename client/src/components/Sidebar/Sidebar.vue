@@ -27,8 +27,11 @@ import ProjectForm from '@/forms/ProjectForm.vue';
 import FormModal from '@/modals/CardModal.vue';
 import type { NewProject } from '@/models/project.model';
 import { useProjectsStore } from '@/stores/projects.store';
+import { useToast } from 'vue-toastification';
 
 const { createProject } = useProjectsStore();
+const toast = useToast();
+
 const showCreateModal = ref(false);
 const loadingCreate = ref(false);
 
@@ -38,6 +41,7 @@ const handleCreateConfirm = async (newProject: NewProject) => {
     await createProject(newProject);
     showCreateModal.value = false;
   } catch (e) {
+    toast.error("Something happened, couldn't create project");
     console.log(e);
   } finally {
     loadingCreate.value = false;

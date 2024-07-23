@@ -21,10 +21,12 @@ import { storeToRefs } from 'pinia';
 import TasksBoard from '@/components/TasksBoard/TasksBoard.vue';
 import { useProjectsStore } from '@/stores/projects.store';
 import { Skeletor } from 'vue-skeletor';
+import { useToast } from 'vue-toastification';
 
 const { fetchTasks } = useTasksStore();
 const { projects } = storeToRefs(useProjectsStore());
 const { tasks } = storeToRefs(useTasksStore());
+const toast = useToast();
 
 const props = defineProps({
   projectId: {
@@ -45,6 +47,7 @@ watch(
     try {
       await fetchTasks({ projectId: projectId.value });
     } catch (e) {
+      toast.error("Something happened, couldn't get tasks");
       console.log(e);
     }
   },

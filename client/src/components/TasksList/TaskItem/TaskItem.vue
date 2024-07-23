@@ -43,6 +43,7 @@ import CardModal from '@/modals/CardModal.vue';
 import TaskForm from '@/forms/TaskForm.vue';
 import { useTasksStore } from '@/stores/tasks.store';
 import ConfirmModal from '@/modals/ConfirmModal.vue';
+import { useToast } from 'vue-toastification';
 
 const props = defineProps({
   task: {
@@ -58,6 +59,7 @@ const props = defineProps({
 const { task } = toRefs(props);
 
 const { updateTask, deleteTask } = useTasksStore();
+const toast = useToast();
 
 const showEditModal = ref(false);
 const loadingEdit = ref(false);
@@ -75,6 +77,7 @@ const handleEditConfirm = async (newTask: Task) => {
     await updateTask(newTask);
     showEditModal.value = false;
   } catch (e) {
+    toast.error("Something happened, couldn't update task");
     console.log(e);
   } finally {
     loadingEdit.value = false;
@@ -87,6 +90,7 @@ const handleDeleteConfirm = async () => {
     task.value && (await deleteTask(task.value._id));
     showDeleteModal.value = false;
   } catch (e) {
+    toast.error("Something happened, couldn't delete task");
     console.log(e);
   } finally {
     loadingDelete.value = false;

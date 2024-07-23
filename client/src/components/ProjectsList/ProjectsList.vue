@@ -23,11 +23,13 @@ import { useProjectsStore } from '@/stores/projects.store';
 import { storeToRefs } from 'pinia';
 import { useRoute, useRouter } from 'vue-router';
 import { RouteNames } from '@/router/router';
+import { useToast } from 'vue-toastification';
 
 const router = useRouter();
 const route = useRoute();
 const { fetchProjects } = useProjectsStore();
 const { projects } = storeToRefs(useProjectsStore());
+const toast = useToast();
 
 const loading = ref(false);
 
@@ -36,6 +38,7 @@ onMounted(async () => {
     loading.value = true;
     await fetchProjects();
   } catch (e) {
+    toast.error("Something happened, couldn't get projects");
     console.log(e);
   } finally {
     loading.value = false;

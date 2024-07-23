@@ -50,6 +50,7 @@ import { useProjectsStore } from '@/stores/projects.store';
 import ConfirmModal from '@/modals/ConfirmModal.vue';
 import { useRoute, useRouter } from 'vue-router';
 import { RouteNames } from '@/router/router';
+import { useToast } from 'vue-toastification';
 
 const props = defineProps({
   project: {
@@ -71,6 +72,7 @@ const { project } = toRefs(props);
 const { updateProject, deleteProject } = useProjectsStore();
 const route = useRoute();
 const router = useRouter();
+const toast = useToast();
 
 const showEditModal = ref(false);
 const loadingEdit = ref(false);
@@ -88,6 +90,7 @@ const handleEditConfirm = async (newProject: Project) => {
     await updateProject(newProject);
     showEditModal.value = false;
   } catch (e) {
+    toast.error("Something happened, couldn't update project");
     console.log(e);
   } finally {
     loadingEdit.value = false;
@@ -103,6 +106,7 @@ const handleDeleteConfirm = async () => {
       await router.push({ name: RouteNames.home });
     }
   } catch (e) {
+    toast.error("Something happened, couldn't delete project");
     console.log(e);
   } finally {
     loadingDelete.value = false;

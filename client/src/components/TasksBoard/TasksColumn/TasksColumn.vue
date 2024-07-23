@@ -26,6 +26,7 @@ import IconButton from '@/ui/IconButton/IconButton.vue';
 import TaskForm from '@/forms/TaskForm.vue';
 import { useTasksStore } from '@/stores/tasks.store';
 import FormModal from '@/modals/CardModal.vue';
+import { useToast } from 'vue-toastification';
 
 const props = defineProps({
   tasks: {
@@ -49,6 +50,7 @@ const props = defineProps({
 const { projectId } = toRefs(props);
 
 const { createTask } = useTasksStore();
+const toast = useToast();
 
 const showCreateModal = ref(false);
 const loadingCreate = ref(false);
@@ -59,6 +61,7 @@ const handleCreateConfirm = async (newTask: NewTask) => {
     await createTask({ ...newTask, projectId: projectId.value });
     showCreateModal.value = false;
   } catch (e) {
+    toast.error("Something happened, couldn't create task");
     console.log(e);
   } finally {
     loadingCreate.value = false;

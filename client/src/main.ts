@@ -12,7 +12,8 @@ import App from './App.vue';
 import router from './router/router';
 import { VueResponsiveness } from 'vue-responsiveness';
 import { createVfm } from 'vue-final-modal';
-// import { default as Loading } from 'vue3-loading-overlay';
+import Toast, { POSITION } from 'vue-toastification';
+import 'vue-toastification/dist/index.css';
 
 const app = createApp(App);
 
@@ -22,6 +23,8 @@ app.use(createPinia());
 app.use(router);
 app.use(VueResponsiveness);
 app.use(vfm);
-// app.use(Loading)
+app.use(Toast, {
+  position: POSITION.BOTTOM_CENTER,
+});
 
 app.mount('#app');

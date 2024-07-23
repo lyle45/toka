@@ -19,6 +19,7 @@ import { useProjectsStore } from '@/stores/projects.store';
 import type { RouteLocation } from 'vue-router';
 import { useLoading } from 'vue3-loading-overlay';
 import styles from '@/assets/_exports.module.scss';
+import { useToast } from 'vue-toastification';
 
 function setCurrentProject(to: RouteLocation) {
   const { setCurrentProjectId } = useProjectsStore();
@@ -37,6 +38,7 @@ export default defineComponent({
   },
   async beforeRouteEnter(to) {
     const loading = useLoading();
+    const toast = useToast();
     setCurrentProject(to);
     try {
       loading.show({
@@ -45,6 +47,7 @@ export default defineComponent({
       });
       await webSocketService.connect();
     } catch (e) {
+      toast.error("Something happened, can't connect to Live Updates");
       console.log(e);
     } finally {
       loading.hide();
