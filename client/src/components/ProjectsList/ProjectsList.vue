@@ -21,20 +21,17 @@
 
 <script setup lang="ts">
 import ProjectItem from './ProjectItem/ProjectItem.vue';
-import { type ComponentPublicInstance, computed, onMounted, ref, watch } from 'vue';
+import { type ComponentPublicInstance, computed, ref, watch } from 'vue';
 import { useProjectsStore } from '@/stores/projects.store';
 import { storeToRefs } from 'pinia';
 import { useRoute, useRouter } from 'vue-router';
 import { RouteNames } from '@/router/router';
-import { useToast } from 'vue-toastification';
 import type { Project } from '@/models/project.model';
 import scrollIntoView from 'scroll-into-view-if-needed';
 
 const router = useRouter();
 const route = useRoute();
-const { fetchProjects } = useProjectsStore();
 const { projects, loadingProjects } = storeToRefs(useProjectsStore());
-const toast = useToast();
 
 const projectElements = ref<Record<string, HTMLDivElement | null>>({});
 
@@ -66,15 +63,6 @@ watch(
   },
   { immediate: true }
 );
-
-onMounted(async () => {
-  try {
-    await fetchProjects();
-  } catch (e) {
-    toast.error("Something happened, couldn't get projects");
-    console.log(e);
-  }
-});
 
 const handleClick = (projectId: string) => {
   router.push({ name: RouteNames.project, params: { projectId } });

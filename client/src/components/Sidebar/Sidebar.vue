@@ -20,8 +20,8 @@
 </template>
 
 <script setup lang="ts">
-import ProjectsList from '@/components/ProjectsList/ProjectsList.vue';
 import { ref } from 'vue';
+import ProjectsList from '@/components/ProjectsList/ProjectsList.vue';
 import IconButton from '@/ui/IconButton/IconButton.vue';
 import ProjectForm from '@/forms/ProjectForm.vue';
 import FormModal from '@/modals/CardModal.vue';
@@ -68,7 +68,6 @@ const handleCreateConfirm = async (newProject: NewProject) => {
 .title-container {
   display: flex;
   align-items: center;
-  align-content: center;
   justify-content: space-between;
   padding: 16px;
   position: sticky;

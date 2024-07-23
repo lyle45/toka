@@ -1,9 +1,10 @@
 <template>
   <div class="layout">
-    <AppHeader />
+    <AppHeader @toggle-sidebar="toggleSidebar" />
     <div class="main-container">
-      <AppSidebar class="col-3" />
-      <main class="main-content col-9">
+      <SidebarModal v-if="$matches.sm.max" v-model="isSidebarModalOpen" />
+      <Sidebar v-else class="col-3" />
+      <main class="main-content col-sm-9 col-12">
         <router-view />
       </main>
     </div>
@@ -12,14 +13,16 @@
 
 <script lang="ts">
 import AppHeader from '@/components/Header/Header.vue';
-import AppSidebar from '@/components/Sidebar/Sidebar.vue';
-import { defineComponent } from 'vue';
+import Sidebar from '@/components/Sidebar/Sidebar.vue';
+import { defineComponent, onMounted, ref, watch } from 'vue';
 import { webSocketService } from '@/services/web-socket.service';
 import { useProjectsStore } from '@/stores/projects.store';
 import type { RouteLocation } from 'vue-router';
 import { useLoading } from 'vue3-loading-overlay';
 import styles from '@/assets/_exports.module.scss';
 import { useToast } from 'vue-toastification';
+import { useMatches } from 'vue-responsiveness';
+import SidebarModal from '@/modals/SidebarModal.vue';
 
 function setCurrentProject(to: RouteLocation) {
   const { setCurrentProjectId } = useProjectsStore();
@@ -33,8 +36,9 @@ function setCurrentProject(to: RouteLocation) {
 // Not using script setup because we need to use beforeRouteEnter
 export default defineComponent({
   components: {
+    SidebarModal,
     AppHeader,
-    AppSidebar,
+    Sidebar,
   },
   async beforeRouteEnter(to) {
     const loading = useLoading();
@@ -54,6 +58,41 @@ export default defineComponent({
     }
   },
   beforeRouteUpdate: setCurrentProject,
+  setup() {
+    const { fetchProjects } = useProjectsStore();
+    const toast = useToast();
+    const isSidebarModalOpen = ref(false);
+
+    const toggleSidebar = () => {
+      isSidebarModalOpen.value = !isSidebarModalOpen.value;
+    };
+
+    const matches = useMatches();
+
+    watch(
+      () => matches.sm.min,
+      (isMdAndUp) => {
+        if (isMdAndUp) {
+          isSidebarModalOpen.value = false;
+        }
+      },
+      { immediate: true }
+    );
+
+    onMounted(async () => {
+      try {
+        await fetchProjects();
+      } catch (e) {
+        toast.error("Something happened, couldn't get projects");
+        console.log(e);
+      }
+    });
+
+    return {
+      isSidebarModalOpen,
+      toggleSidebar,
+    };
+  },
 });
 </script>
 

@@ -1,11 +1,12 @@
 <template>
   <button class="icon-button" :style="{ width: size, height: size }" @click="handleClick">
-    <i :class="iconClass" :style="{ fontSize: iconSize }"></i>
+    <i :class="iconClass" :style="{ fontSize: iconSize, color }"></i>
   </button>
 </template>
 
 <script setup lang="ts">
 import { computed, toRefs } from 'vue';
+import styles from '@/assets/_exports.module.scss';
 
 const props = defineProps({
   iconClass: {
@@ -15,6 +16,10 @@ const props = defineProps({
   size: {
     type: String,
     default: '32px', // Default size for the button
+  },
+  color: {
+    type: String,
+    default: styles.primaryColor,
   },
 });
 
@@ -49,7 +54,6 @@ const iconSize = computed(() => {
   padding: 0;
 
   i {
-    color: $primary-color;
     font-size: 16px;
   }
 

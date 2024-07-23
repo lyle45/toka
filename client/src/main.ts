@@ -4,16 +4,15 @@ import 'vue-skeletor/dist/vue-skeletor.css';
 import '@mdi/font/css/materialdesignicons.css';
 import 'vue-final-modal/style.css';
 import 'vue3-loading-overlay/dist/vue3-loading-overlay.css';
+import 'vue-toastification/dist/index.css';
 
 import { createApp } from 'vue';
-
 import { createPinia } from 'pinia';
 import App from './App.vue';
 import router from './router/router';
 import { VueResponsiveness } from 'vue-responsiveness';
 import { createVfm } from 'vue-final-modal';
 import Toast, { POSITION } from 'vue-toastification';
-import 'vue-toastification/dist/index.css';
 
 const app = createApp(App);
 
