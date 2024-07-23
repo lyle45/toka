@@ -1,10 +1,19 @@
 <template>
-  <div class="tasks-list">
+  <div class="tasks-list" :class="{ 'flex-height': !tasks.length }">
     <template v-if="!loadingTasks">
-      <template v-if="tasks.length">
-        <TaskItem v-for="task in tasks" :key="task._id" :task="task" />
-      </template>
-      <div v-else class="no-tasks">No tasks available</div>
+      <Draggable
+        :model-value="tasks"
+        :group="group"
+        :sort="false"
+        item-key="_id"
+        :class="{ 'flex-height': !tasks.length }"
+        @change="handleListChange"
+      >
+        <template #item="{ element }">
+          <TaskItem :task="element" />
+        </template>
+      </Draggable>
+      <div v-if="!tasks.length" class="no-tasks">No tasks available</div>
     </template>
     <template v-else>
       <TaskItem v-for="i in getRandomNumber()" :key="i" loading />
@@ -13,22 +22,69 @@
 </template>
 
 <script setup lang="ts">
-import type { PropType } from 'vue';
-import type { Task } from '@/models/task.model';
+import { computed, type PropType, toRefs } from 'vue';
+import { type Task, TaskStates } from '@/models/task.model';
 import TaskItem from '@/components/TasksList/TaskItem/TaskItem.vue';
 import { storeToRefs } from 'pinia';
 import { useTasksStore } from '@/stores/tasks.store';
+import Draggable from 'vuedraggable';
+import { useToast } from 'vue-toastification';
 
-const { loadingTasks } = storeToRefs(useTasksStore());
+interface DraggableChangeEvent<T> {
+  added?: {
+    newIndex: number;
+    element: T;
+  };
+  removed?: {
+    oldIndex: number;
+    element: T;
+  };
+  moved?: {
+    newIndex: number;
+    oldIndex: number;
+    element: T;
+  };
+}
 
-defineProps({
+const props = defineProps({
   tasks: {
     type: Array as PropType<Task[]>,
     required: true,
   },
+  taskState: {
+    type: String as PropType<TaskStates>,
+    required: true,
+  },
 });
 
+const { taskState } = toRefs(props);
+
+const { updateTask } = useTasksStore();
+const { loadingTasks } = storeToRefs(useTasksStore());
+const toast = useToast();
+
 const getRandomNumber = () => Math.floor(Math.random() * 3) + 1;
+
+const group = computed(() => ({
+  name: taskState.value,
+  pull: [TaskStates.IN_PROGRESS, TaskStates.CREATED, TaskStates.COMPLETED],
+  put: [TaskStates.IN_PROGRESS, TaskStates.CREATED, TaskStates.COMPLETED],
+}));
+
+const handleListChange = (e: DraggableChangeEvent<Task>) => {
+  if (e.added) {
+    editTask(e.added.element);
+  }
+};
+
+const editTask = async (newTask: Task) => {
+  try {
+    await updateTask({ ...newTask, state: taskState.value });
+  } catch (e) {
+    toast.error("Something happened, couldn't update task");
+    console.log(e);
+  }
+};
 </script>
 
 <style scoped lang="scss">
@@ -41,5 +97,12 @@ const getRandomNumber = () => Math.floor(Math.random() * 3) + 1;
   text-align: center;
   font-size: 18px;
   color: #999;
+}
+
+.flex-height {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
 }
 </style>

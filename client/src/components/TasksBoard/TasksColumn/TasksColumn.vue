@@ -5,7 +5,7 @@
       <IconButton icon-class="mdi mdi-plus" @click="showCreateModal = true" />
     </div>
     <div class="main-content">
-      <TasksList :tasks="tasks" />
+      <TasksList :tasks="tasks" :task-state="taskState" />
     </div>
     <FormModal v-model="showCreateModal" title="Create project">
       <TaskForm
@@ -71,6 +71,8 @@ const handleCreateConfirm = async (newTask: NewTask) => {
 
 <style scoped lang="scss">
 .task-column {
+  display: flex;
+  flex-direction: column;
   background-color: $background-color;
   border-radius: 8px;
   height: 100%;
@@ -89,6 +91,8 @@ const handleCreateConfirm = async (newTask: NewTask) => {
   position: sticky;
   top: 0;
   z-index: 1;
+  min-width: 250px;
+  white-space: nowrap;
   background-color: $background-color;
 }
 
@@ -99,6 +103,9 @@ const handleCreateConfirm = async (newTask: NewTask) => {
 }
 
 .main-content {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
   padding: 16px;
 }
 </style>
