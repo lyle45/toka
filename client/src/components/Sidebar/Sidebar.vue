@@ -11,7 +11,7 @@
     </div>
 
     <div class="content-container">
-      <ProjectsList />
+      <ProjectsList :projects="filteredProjects" />
     </div>
 
     <FormModal v-model="showCreateModal" title="Create project">
@@ -25,7 +25,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
 import ProjectsList from '@/components/ProjectsList/ProjectsList.vue';
 import IconButton from '@/ui/IconButton/IconButton.vue';
 import ProjectForm from '@/forms/ProjectForm.vue';
@@ -39,12 +39,20 @@ import OutlinedInput from '@/ui/OutlinedInput/OutlinedInput.vue';
 import { storeToRefs } from 'pinia';
 
 const { createProject } = useProjectsStore();
-const { filterText } = storeToRefs(useProjectsStore());
+const { projects } = storeToRefs(useProjectsStore());
 const router = useRouter();
 const toast = useToast();
 
 const showCreateModal = ref(false);
 const loadingCreate = ref(false);
+
+const filterText = ref('');
+
+const filteredProjects = computed(() =>
+  !filterText.value
+    ? projects.value
+    : projects.value.filter((project) => project.name.includes(filterText.value))
+);
 
 const handleCreateConfirm = async (newProject: NewProject) => {
   try {

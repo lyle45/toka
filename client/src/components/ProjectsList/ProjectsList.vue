@@ -1,8 +1,8 @@
 <template>
   <div class="project-list">
     <template v-if="!loadingProjects">
-      <div v-if="filteredProjects.length">
-        <div v-for="project in filteredProjects" :key="project._id" :ref="itemRefFunction(project)">
+      <div v-if="projects.length">
+        <div v-for="project in projects" :key="project._id" :ref="itemRefFunction(project)">
           <ProjectItem
             :project="project"
             :active="currentProjectId === project._id"
@@ -21,7 +21,7 @@
 
 <script setup lang="ts">
 import ProjectItem from './ProjectItem/ProjectItem.vue';
-import { type ComponentPublicInstance, computed, ref, watch } from 'vue';
+import { type ComponentPublicInstance, computed, type PropType, ref, toRefs, watch } from 'vue';
 import { useProjectsStore } from '@/stores/projects.store';
 import { storeToRefs } from 'pinia';
 import { useRoute, useRouter } from 'vue-router';
@@ -29,9 +29,18 @@ import { RouteNames } from '@/router/router';
 import type { Project } from '@/models/project.model';
 import scrollIntoView from 'scroll-into-view-if-needed';
 
+const props = defineProps({
+  projects: {
+    type: Object as PropType<Project[]>,
+    required: true,
+  },
+});
+
+const { projects } = toRefs(props);
+
 const router = useRouter();
 const route = useRoute();
-const { filteredProjects, loadingProjects } = storeToRefs(useProjectsStore());
+const { loadingProjects } = storeToRefs(useProjectsStore());
 
 const projectElements = ref<Record<string, HTMLDivElement | null>>({});
 
@@ -54,7 +63,7 @@ const scrollToItem = (projectId: string) => {
 };
 
 watch(
-  () => [route.params.projectId as string, filteredProjects.value] as const,
+  () => [route.params.projectId as string, projects.value] as const,
   async ([newProjectId]) => {
     // Have to wait for items to mount after fetching
     setTimeout(() => {

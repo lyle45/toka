@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia';
-import { computed, ref } from 'vue';
+import { ref } from 'vue';
 import type { NewProject, Project } from '@/models/project.model';
 import { projectsService } from '@/services/projects.service';
 
@@ -7,14 +7,6 @@ export const useProjectsStore = defineStore('projects', () => {
   const projects = ref<Project[]>([]);
   const loadingProjects = ref(false);
   const currentProjectId = ref('');
-
-  const filterText = ref('');
-
-  const filteredProjects = computed(() =>
-    !filterText.value
-      ? projects.value
-      : projects.value.filter((project) => project.name.includes(filterText.value))
-  );
 
   const setCurrentProjectId = (projectId: string) => {
     currentProjectId.value = projectId;
@@ -63,8 +55,6 @@ export const useProjectsStore = defineStore('projects', () => {
     projects,
     loadingProjects,
     currentProjectId,
-    filterText,
-    filteredProjects,
     setCurrentProjectId,
     fetchProjects,
     addProjectToStore,
