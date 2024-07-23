@@ -7,6 +7,8 @@
         :sort="false"
         item-key="_id"
         :class="{ 'flex-height': !tasks.length }"
+        :delay="200"
+        delay-on-touch-only
         @change="handleListChange"
       >
         <template #item="{ element }">
