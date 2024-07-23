@@ -70,8 +70,11 @@ watch(
 
 .project-details {
   min-height: 115px;
+  max-height: 180px;
+  overflow: auto;
   padding: 16px 16px 0 16px;
   margin-bottom: 16px;
+  word-break: break-word;
 }
 
 .project-title {
