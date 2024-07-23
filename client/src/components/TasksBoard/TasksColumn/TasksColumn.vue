@@ -23,7 +23,7 @@ import { type PropType, ref, toRefs } from 'vue';
 import { type NewTask, type Task, TaskStates } from '@/models/task.model';
 import TasksList from '@/components/TasksList/TasksList.vue';
 import IconButton from '@/ui/IconButton/IconButton.vue';
-import TaskForm from '@/forms/TaskForm.vue';
+import TaskForm from '@/forms/TaskForm/TaskForm.vue';
 import { useTasksStore } from '@/stores/tasks.store';
 import FormModal from '@/modals/CardModal.vue';
 import { useToast } from 'vue-toastification';

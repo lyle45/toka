@@ -45,7 +45,7 @@ import Card from '@/ui/Card/Card.vue';
 import type { Project } from '@/models/project.model';
 import CardModal from '@/modals/CardModal.vue';
 import IconButton from '@/ui/IconButton/IconButton.vue';
-import ProjectForm from '@/forms/ProjectForm.vue';
+import ProjectForm from '@/forms/ProjectForm/ProjectForm.vue';
 import { useProjectsStore } from '@/stores/projects.store';
 import ConfirmModal from '@/modals/ConfirmModal.vue';
 import { useRoute, useRouter } from 'vue-router';

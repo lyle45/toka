@@ -40,7 +40,7 @@ import type { Task } from '@/models/task.model';
 import { format } from 'date-fns';
 import IconButton from '@/ui/IconButton/IconButton.vue';
 import CardModal from '@/modals/CardModal.vue';
-import TaskForm from '@/forms/TaskForm.vue';
+import TaskForm from '@/forms/TaskForm/TaskForm.vue';
 import { useTasksStore } from '@/stores/tasks.store';
 import ConfirmModal from '@/modals/ConfirmModal.vue';
 import { useToast } from 'vue-toastification';

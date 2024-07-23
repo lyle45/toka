@@ -9,7 +9,7 @@
 
 <script setup lang="ts">
 import { toRefs, type PropType } from 'vue';
-import GenericForm from '@/forms/GenericForm.vue';
+import GenericForm from '@/forms/GenericForm/GenericForm.vue';
 import { type Field, FieldTypes } from '@/hooks/forms';
 import type { NewProject, Project } from '@/models/project.model';
 

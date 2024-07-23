@@ -28,7 +28,7 @@
 import { computed, ref } from 'vue';
 import ProjectsList from '@/components/ProjectsList/ProjectsList.vue';
 import IconButton from '@/ui/IconButton/IconButton.vue';
-import ProjectForm from '@/forms/ProjectForm.vue';
+import ProjectForm from '@/forms/ProjectForm/ProjectForm.vue';
 import FormModal from '@/modals/CardModal.vue';
 import type { NewProject } from '@/models/project.model';
 import { useProjectsStore } from '@/stores/projects.store';
