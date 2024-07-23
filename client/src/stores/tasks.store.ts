@@ -1,9 +1,12 @@
-import { defineStore } from 'pinia';
+import { defineStore, storeToRefs } from 'pinia';
 import { ref } from 'vue';
 import type { NewTask, Task } from '@/models/task.model';
 import { type GetTasksParams, tasksService } from '@/services/tasks.service';
+import { useProjectsStore } from '@/stores/projects.store';
 
 export const useTasksStore = defineStore('tasks', () => {
+  const { currentProjectId } = storeToRefs(useProjectsStore());
+
   const tasks = ref<Task[]>([]);
   const loadingTasks = ref(false);
 
@@ -16,21 +19,50 @@ export const useTasksStore = defineStore('tasks', () => {
     }
   };
 
+  const addTaskToStore = (task: Task) => {
+    if (task.projectId === currentProjectId.value) {
+      tasks.value.push(task);
+    }
+  };
+
   const createTask = async (newTask: NewTask) => {
     const task = await tasksService.createTask(newTask);
-    tasks.value.push(task);
+    addTaskToStore(task);
+  };
+
+  const updateTaskInStore = (task: Task) => {
+    if (task.projectId === currentProjectId.value) {
+      const index = tasks.value.findIndex((p) => p._id === task._id);
+      tasks.value[index] = task;
+    }
   };
 
   const updateTask = async (task: Task) => {
     const updatedTask = await tasksService.updateTask(task);
-    const index = tasks.value.findIndex((t) => t._id === updatedTask._id);
-    tasks.value[index] = updatedTask;
+    updateTaskInStore(updatedTask);
+  };
+
+  const deleteTaskFromStore = (taskId: string) => {
+    if (taskId === currentProjectId.value) {
+      const index = tasks.value.findIndex((task) => task._id === taskId);
+      index > -1 && tasks.value.splice(index, 1);
+    }
   };
 
   const deleteTask = async (taskId: string) => {
     await tasksService.deleteTask(taskId);
-    tasks.value = tasks.value.filter((task) => task._id !== taskId);
+    deleteTaskFromStore(taskId);
   };
 
-  return { tasks, fetchTasks, loadingTasks, updateTask, createTask, deleteTask };
+  return {
+    tasks,
+    loadingTasks,
+    fetchTasks,
+    addTaskToStore,
+    createTask,
+    updateTaskInStore,
+    updateTask,
+    deleteTaskFromStore,
+    deleteTask,
+  };
 });

@@ -1,6 +1,8 @@
 import express from "express";
 import router from "./router.js";
 import expressWs from "express-ws";
+import { v4 as uuidv4 } from 'uuid';
+import {changeTypes} from './constants.js';
 
 class Server {
   constructor() {
@@ -10,15 +12,22 @@ class Server {
     app.use(router);
     app.ws("/ws", (ws) => {
       console.log("ws client connected");
+      const clientId = uuidv4();
+      ws.clientId = clientId;
       ws.onclose = () => console.log("ws client disconnected");
+
+      ws.send(JSON.stringify({ type: changeTypes.CLIENT_ID, clientId }));
     });
 
     this.app = app;
     this.wss = wss;
   }
-  broadcast(msg) {
+  broadcast(msg, senderId) {
     this.wss.clients.forEach((client) => {
-      client.send(JSON.stringify(msg));
+      // Don't broadcast to the sender
+      if (client.clientId !== senderId) {
+        client.send(JSON.stringify(msg));
+      }
     });
   }
   start() {

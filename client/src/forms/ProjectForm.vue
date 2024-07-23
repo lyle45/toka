@@ -8,7 +8,7 @@
 </template>
 
 <script setup lang="ts">
-import { toRefs, defineEmits, defineProps, computed, type PropType } from 'vue';
+import { toRefs, computed, type PropType } from 'vue';
 import GenericForm from '@/forms/GenericForm.vue';
 import { FieldTypes } from '@/hooks/forms';
 import type { NewProject, Project } from '@/models/project.model';

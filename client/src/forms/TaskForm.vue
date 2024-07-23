@@ -8,7 +8,7 @@
 </template>
 
 <script setup lang="ts">
-import { toRefs, defineEmits, defineProps, type PropType } from 'vue';
+import { toRefs, type PropType } from 'vue';
 import GenericForm from '@/forms/GenericForm.vue';
 import { type Field, FieldTypes } from '@/hooks/forms';
 import { type NewTask, type Task, TaskStates } from '@/models/task.model';

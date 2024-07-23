@@ -5,25 +5,35 @@ import { changeTypes, modelEvents } from "./constants.js";
 // and broadcast notifications on change
 export const registerNotificationEvents = (modelName, schema) => {
   schema
-    .post(modelEvents.SAVE, (data) =>
-      server.broadcast({
-        type: changeTypes.INSERT,
-        model: modelName,
-        data,
-      })
+    .post(modelEvents.SAVE, function (data) {
+      // Access the senderId from the saveOptions
+      const senderId = this.$__?.saveOptions?.senderId;
+      console.log('senderId', senderId);
+        server.broadcast({
+          type: changeTypes.INSERT,
+          model: modelName,
+          data,
+        }, senderId);
+      }
     )
-    .post(modelEvents.UPDATE, (data) =>
-      server.broadcast({
-        type: changeTypes.UPDATE,
-        model: modelName,
-        data,
-      })
+    .post(modelEvents.UPDATE, function (data) {
+        // Access the senderId from the saveOptions
+        const senderId = this.$__?.saveOptions?.senderId;
+        server.broadcast({
+          type: changeTypes.UPDATE,
+          model: modelName,
+          data,
+        }, senderId)
+      }
     )
-    .post(modelEvents.DELETE, (data) =>
-      server.broadcast({
-        type: changeTypes.DELETE,
-        model: modelName,
-        data,
-      })
+    .post(modelEvents.DELETE, function (data) {
+      // Access the senderId from the saveOptions
+      const senderId = this.$__?.saveOptions?.senderId;
+        server.broadcast({
+          type: changeTypes.DELETE,
+          model: modelName,
+          data,
+        }, senderId)
+      }
     );
 };

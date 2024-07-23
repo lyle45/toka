@@ -1,5 +1,6 @@
 import express from "express";
 import { Task } from "./task-model.js";
+import {Project} from '../project/project-model.js';
 
 const router = express.Router();
 const BASE_PATH = "/api/tasks";
@@ -16,7 +17,8 @@ router
   })
   // create new
   .post((req, res, next) => {
-    Task.create(req.body)
+    const clientId = req.headers['client-id'];
+    new Task(req.body).save({ senderId: clientId })
       .then((task) => res.send(task))
       .catch(next);
   });
@@ -32,10 +34,10 @@ router
   });
 
 router
-  .route(`${BASE_PATH}/:id`)
+  .route(`${BASE_PATH}/:_id`)
   // get one
   .get((req, res, next) => {
-    Task.findById(req.params.id)
+    Task.findById(req.params._id)
       .lean()
       .orFail()
       .then((task) => res.send(task))
@@ -43,7 +45,8 @@ router
   })
   // update
   .put((req, res, next) => {
-    Task.findByIdAndUpdate(req.params.id, req.body, { new: true })
+    const clientId = req.headers['client-id'];
+    Task.findByIdAndUpdate(req.params._id, req.body, { new: true, senderId: clientId })
       .lean()
       .orFail()
       .then((task) => res.send(task))
@@ -51,7 +54,8 @@ router
   })
   // delete
   .delete((req, res, next) => {
-    Task.findByIdAndDelete(req.params.id)
+    const clientId = req.headers['client-id'];
+    Task.findByIdAndDelete(req.params._id, {senderId: clientId})
       .lean()
       .orFail()
       .then(() => res.send(req.params))

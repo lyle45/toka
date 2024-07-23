@@ -1,4 +1,5 @@
 export const changeTypes = {
+  CLIENT_ID: "CLIENT_ID",
   INSERT: "INSERT",
   UPDATE: "UPDATE",
   DELETE: "DELETE",

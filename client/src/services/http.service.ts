@@ -13,6 +13,10 @@ class HttpService {
     });
   }
 
+  public addClientId(clientId: string) {
+    this.axiosInstance.defaults.headers['Client-Id'] = clientId || '';
+  }
+
   public get<T>(url: string, config?: AxiosRequestConfig): Promise<AxiosResponse<T>> {
     return this.axiosInstance.get<T>(url, config);
   }

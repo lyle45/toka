@@ -1,8 +1,8 @@
-import express from "express";
-import { Project } from "./project-model.js";
+import express from 'express';
+import { Project } from './project-model.js';
 
 const router = express.Router();
-const BASE_PATH = "/api/projects";
+const BASE_PATH = '/api/projects';
 
 router
   .route(BASE_PATH)
@@ -15,7 +15,8 @@ router
   })
   // create new
   .post((req, res, next) => {
-    Project.create(req.body)
+    const clientId = req.headers['client-id'];
+    new Project(req.body).save({ senderId: clientId })
       .then((project) => res.send(project))
       .catch(next);
   });
@@ -24,17 +25,17 @@ router
   .route(`${BASE_PATH}/search`)
   // search
   .post((req, res, next) => {
-    Project.find({ name: { $regex: req.body.query }})
+    Project.find({ name: { $regex: req.body.query } })
       .lean()
       .then((projects) => res.send(projects))
       .catch(next);
   });
 
 router
-  .route(`${BASE_PATH}/:id`)
+  .route(`${BASE_PATH}/:_id`)
   // get one
   .get((req, res, next) => {
-    Project.findById(req.params.id)
+    Project.findById(req.params._id)
       .lean()
       .orFail()
       .then((project) => res.send(project))
@@ -42,7 +43,8 @@ router
   })
   // update
   .put((req, res, next) => {
-    Project.findByIdAndUpdate(req.params.id, req.body, { new: true })
+    const clientId = req.headers['client-id'];
+    Project.findByIdAndUpdate(req.params._id, req.body, { new: true, sender: clientId })
       .lean()
       .orFail()
       .then((project) => res.send(project))
@@ -50,7 +52,8 @@ router
   })
   // delete
   .delete((req, res, next) => {
-    Project.findByIdAndDelete(req.params.id)
+    const clientId = req.headers['client-id'];
+    Project.findByIdAndDelete(req.params._id, { sender: clientId })
       .lean()
       .orFail()
       .then(() => res.send(req.params))
