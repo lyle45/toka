@@ -15,7 +15,7 @@ import { type NewTask, type Task, TaskStates } from '@/models/task.model';
 
 const props = defineProps({
   task: {
-    type: Object as PropType<Task>,
+    type: Object as PropType<Partial<Task>>,
     default: () => ({ title: '', description: '', dueDate: '' }),
   },
   loading: {

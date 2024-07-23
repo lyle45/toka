@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router';
 
 export enum RouteNames {
+  main = 'main',
   home = 'home',
   project = 'project',
 }
@@ -10,9 +11,14 @@ const router = createRouter({
   routes: [
     {
       path: '/',
-      name: RouteNames.home,
+      name: RouteNames.main,
       component: () => import('@/layouts/MainLayout.vue'),
       children: [
+        {
+          path: '',
+          name: RouteNames.home,
+          component: () => import('@/pages/HomePage.vue'),
+        },
         {
           path: 'project/:projectId',
           name: RouteNames.project,

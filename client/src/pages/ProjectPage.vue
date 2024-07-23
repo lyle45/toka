@@ -1,8 +1,8 @@
 <template>
   <div class="page-container">
-    <div v-if="currentProject" class="project-details">
-      <h1 class="project-title">{{ currentProject.name }}</h1>
-      <p class="project-description">{{ currentProject.description }}</p>
+    <div v-if="!loadingProjects" class="project-details">
+      <h1 class="project-title">{{ currentProject?.name }}</h1>
+      <p class="project-description">{{ currentProject?.description }}</p>
     </div>
     <div v-else class="project-details-skeleton">
       <Skeletor width="40%" height="32px" pill class="skeleton-title" />
@@ -22,9 +22,12 @@ import TasksBoard from '@/components/TasksBoard/TasksBoard.vue';
 import { useProjectsStore } from '@/stores/projects.store';
 import { Skeletor } from 'vue-skeletor';
 import { useToast } from 'vue-toastification';
+import { useRouter } from 'vue-router';
+import { RouteNames } from '@/router/router';
 
+const router = useRouter();
 const { fetchTasks } = useTasksStore();
-const { projects } = storeToRefs(useProjectsStore());
+const { projects, loadingProjects } = storeToRefs(useProjectsStore());
 const { tasks } = storeToRefs(useTasksStore());
 const toast = useToast();
 
@@ -48,6 +51,7 @@ watch(
       await fetchTasks({ projectId: projectId.value });
     } catch (e) {
       toast.error("Something happened, couldn't get tasks");
+      await router.push({ name: RouteNames.home });
       console.log(e);
     }
   },

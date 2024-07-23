@@ -1,14 +1,17 @@
 <template>
   <div class="project-list">
-    <template v-if="!loading">
-      <div v-for="project in projects" :key="project._id" :ref="itemRefFunction(project)">
-        <ProjectItem
-          :project="project"
-          :active="currentProjectId === project._id"
-          class="item"
-          @click="handleClick(project._id)"
-        />
+    <template v-if="!loadingProjects">
+      <div v-if="projects.length">
+        <div v-for="project in projects" :key="project._id" :ref="itemRefFunction(project)">
+          <ProjectItem
+            :project="project"
+            :active="currentProjectId === project._id"
+            class="item"
+            @click="handleClick(project._id)"
+          />
+        </div>
       </div>
+      <div v-else class="no-projects">No projects available</div>
     </template>
     <template v-else>
       <ProjectItem v-for="i in getRandomNumber()" :key="i" loading class="item" />
@@ -30,10 +33,9 @@ import scrollIntoView from 'scroll-into-view-if-needed';
 const router = useRouter();
 const route = useRoute();
 const { fetchProjects } = useProjectsStore();
-const { projects } = storeToRefs(useProjectsStore());
+const { projects, loadingProjects } = storeToRefs(useProjectsStore());
 const toast = useToast();
 
-const loading = ref(false);
 const projectElements = ref<Record<string, HTMLDivElement | null>>({});
 
 const itemRefFunction =
@@ -67,13 +69,10 @@ watch(
 
 onMounted(async () => {
   try {
-    loading.value = true;
     await fetchProjects();
   } catch (e) {
     toast.error("Something happened, couldn't get projects");
     console.log(e);
-  } finally {
-    loading.value = false;
   }
 });
 
@@ -93,5 +92,12 @@ const getRandomNumber = () => Math.floor(Math.random() * 3) + 1;
 
 .item {
   margin-bottom: 16px;
+}
+
+.no-projects {
+  padding: 20px;
+  text-align: center;
+  font-size: 18px;
+  color: #999;
 }
 </style>

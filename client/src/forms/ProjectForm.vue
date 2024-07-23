@@ -15,7 +15,7 @@ import type { NewProject, Project } from '@/models/project.model';
 
 const props = defineProps({
   project: {
-    type: Object as PropType<Project>,
+    type: Object as PropType<Partial<Project>>,
     default: () => ({ name: '', description: '' }),
   },
   loading: {

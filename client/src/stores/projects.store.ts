@@ -5,6 +5,7 @@ import { projectsService } from '@/services/projects.service';
 
 export const useProjectsStore = defineStore('projects', () => {
   const projects = ref<Project[]>([]);
+  const loadingProjects = ref(false);
   const currentProjectId = ref('');
 
   const setCurrentProjectId = (projectId: string) => {
@@ -12,7 +13,12 @@ export const useProjectsStore = defineStore('projects', () => {
   };
 
   const fetchProjects = async () => {
-    projects.value = await projectsService.getProjects();
+    try {
+      loadingProjects.value = true;
+      projects.value = await projectsService.getProjects();
+    } finally {
+      loadingProjects.value = false;
+    }
   };
 
   const addProjectToStore = (project: Project) => {
@@ -47,6 +53,7 @@ export const useProjectsStore = defineStore('projects', () => {
 
   return {
     projects,
+    loadingProjects,
     currentProjectId,
     setCurrentProjectId,
     fetchProjects,
