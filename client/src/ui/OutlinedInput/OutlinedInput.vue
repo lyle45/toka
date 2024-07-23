@@ -1,5 +1,5 @@
 <template>
-  <div :class="['outlined-field', { textarea: textarea }]">
+  <div class="outlined-field" :class="{ textarea, margin }">
     <label v-if="label" :for="elementId" class="field-label">{{ label }}</label>
     <input
       v-if="!textarea"
@@ -52,6 +52,10 @@ defineProps({
     type: String,
     default: '',
   },
+  margin: {
+    type: Boolean,
+    default: true,
+  },
 });
 
 const elementId = computed(() => `field-${Math.random().toString(36).substr(2, 9)}`);
@@ -61,7 +65,10 @@ const elementId = computed(() => `field-${Math.random().toString(36).substr(2, 9
 .outlined-field {
   position: relative;
   width: 100%;
-  margin: 20px 0;
+
+  &.margin {
+    margin: 20px 0;
+  }
 
   .field-label {
     display: block;

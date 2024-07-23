@@ -1,8 +1,8 @@
 <template>
   <div class="project-list">
     <template v-if="!loadingProjects">
-      <div v-if="projects.length">
-        <div v-for="project in projects" :key="project._id" :ref="itemRefFunction(project)">
+      <div v-if="filteredProjects.length">
+        <div v-for="project in filteredProjects" :key="project._id" :ref="itemRefFunction(project)">
           <ProjectItem
             :project="project"
             :active="currentProjectId === project._id"
@@ -31,7 +31,7 @@ import scrollIntoView from 'scroll-into-view-if-needed';
 
 const router = useRouter();
 const route = useRoute();
-const { projects, loadingProjects } = storeToRefs(useProjectsStore());
+const { filteredProjects, loadingProjects } = storeToRefs(useProjectsStore());
 
 const projectElements = ref<Record<string, HTMLDivElement | null>>({});
 
@@ -54,7 +54,7 @@ const scrollToItem = (projectId: string) => {
 };
 
 watch(
-  () => [route.params.projectId as string, projects.value] as const,
+  () => [route.params.projectId as string, filteredProjects.value] as const,
   async ([newProjectId]) => {
     // Have to wait for items to mount after fetching
     setTimeout(() => {

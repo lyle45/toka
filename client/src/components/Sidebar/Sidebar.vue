@@ -1,8 +1,13 @@
 <template>
   <nav class="sidebar">
     <div class="title-container">
-      <div class="project-list-title">Projects:</div>
-      <IconButton class="add-button" icon-class="mdi mdi-plus" @click="showCreateModal = true" />
+      <div class="title">
+        <div class="project-list-title">Projects:</div>
+        <IconButton class="add-button" icon-class="mdi mdi-plus" @click="showCreateModal = true" />
+      </div>
+      <div class="project-filter-container">
+        <OutlinedInput v-model="filterText" :margin="false" placeholder="Filter Projects" />
+      </div>
     </div>
 
     <div class="content-container">
@@ -30,8 +35,11 @@ import { useProjectsStore } from '@/stores/projects.store';
 import { useToast } from 'vue-toastification';
 import { useRouter } from 'vue-router';
 import { RouteNames } from '@/router/router';
+import OutlinedInput from '@/ui/OutlinedInput/OutlinedInput.vue';
+import { storeToRefs } from 'pinia';
 
 const { createProject } = useProjectsStore();
+const { filterText } = storeToRefs(useProjectsStore());
 const router = useRouter();
 const toast = useToast();
 
@@ -67,14 +75,21 @@ const handleCreateConfirm = async (newProject: NewProject) => {
 
 .title-container {
   display: flex;
-  align-items: center;
-  justify-content: space-between;
+  flex-direction: column;
   padding: 16px;
   position: sticky;
   top: 0;
   z-index: 1;
   width: 100%;
+  gap: 16px;
   background-color: $background-color;
+}
+
+.title {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
 .project-list-title {

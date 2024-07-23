@@ -20,7 +20,12 @@
       class="task-filter-container"
       :class="{ small: $matches.sm.max }"
     >
-      <OutlinedInput v-model="filterText" placeholder="Filter tasks" class="task-filter-input" />
+      <OutlinedInput
+        v-model="filterText"
+        placeholder="Filter tasks"
+        :margin="false"
+        class="task-filter-input"
+      />
     </div>
   </header>
 </template>
