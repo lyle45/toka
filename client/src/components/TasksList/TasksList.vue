@@ -7,7 +7,7 @@
         :sort="false"
         item-key="_id"
         :class="{ 'flex-height': !tasks.length }"
-        :delay="$matches.sm.max ? 100 : 0"
+        :delay="isTouch ? 100 : 0"
         delay-on-touch-only
         :scroll-sensitivity="200"
         @change="handleListChange"
@@ -32,6 +32,7 @@ import { storeToRefs } from 'pinia';
 import { useTasksStore } from '@/stores/tasks.store';
 import Draggable from 'vuedraggable';
 import { useToast } from 'vue-toastification';
+import { useMobileDetection } from 'vue3-mobile-detection';
 
 interface DraggableChangeEvent<T> {
   added?: {
@@ -65,8 +66,10 @@ const { taskState } = toRefs(props);
 const { updateTask } = useTasksStore();
 const { loadingTasks } = storeToRefs(useTasksStore());
 const toast = useToast();
-
+const { isMobile } = useMobileDetection();
 const getRandomNumber = () => Math.floor(Math.random() * 3) + 1;
+
+const isTouch = computed(() => isMobile({ tablet: true }));
 
 const group = computed(() => ({
   name: taskState.value,
