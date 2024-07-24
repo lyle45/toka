@@ -7,8 +7,9 @@
         :sort="false"
         item-key="_id"
         :class="{ 'flex-height': !tasks.length }"
-        :delay="200"
+        :delay="$matches.sm.max ? 100 : 0"
         delay-on-touch-only
+        :scroll-sensitivity="200"
         @change="handleListChange"
       >
         <template #item="{ element }">
@@ -69,8 +70,8 @@ const getRandomNumber = () => Math.floor(Math.random() * 3) + 1;
 
 const group = computed(() => ({
   name: taskState.value,
-  pull: [TaskStates.IN_PROGRESS, TaskStates.CREATED, TaskStates.COMPLETED],
-  put: [TaskStates.IN_PROGRESS, TaskStates.CREATED, TaskStates.COMPLETED],
+  pull: true,
+  put: true,
 }));
 
 const handleListChange = (e: DraggableChangeEvent<Task>) => {

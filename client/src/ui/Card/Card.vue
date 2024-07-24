@@ -4,7 +4,7 @@
     :class="{ clickable: clickable && !active && !loading, active }"
     @click="$emit('click')"
   >
-    <div class="card-actions-placeholder"></div>
+    <div v-if="$slots.actions" class="card-actions-placeholder"></div>
     <template v-if="loading">
       <Skeletor class="skeleton-title" width="60%" height="24px" pill />
       <Skeletor class="skeleton-description" width="80%" height="18px" pill />
